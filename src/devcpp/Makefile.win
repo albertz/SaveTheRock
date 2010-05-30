@@ -1,0 +1,69 @@
+# Project: SaveTheRock
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = ../../obj/savethisrock_private.res
+OBJ  = ../../obj/core.o ../../obj/ui.o ../../obj/helper.o ../../obj/level.o ../../obj/math.o ../../obj/renderer.o ../../obj/sprite.o ../../obj/game.o ../../obj/physics.o ../../obj/sound.o ../../obj/filesystem.o ../../obj/leveleditor.o ../../obj/gameobjects.o $(RES)
+LINKOBJ  = ../../obj/core.o ../../obj/ui.o ../../obj/helper.o ../../obj/level.o ../../obj/math.o ../../obj/renderer.o ../../obj/sprite.o ../../obj/game.o ../../obj/physics.o ../../obj/sound.o ../../obj/filesystem.o ../../obj/leveleditor.o ../../obj/gameobjects.o $(RES)
+LIBS =  -L"E:/Dev-Cpp/lib" -lglfw -lglu32 -lopengl32 -laudiere  -s 
+INCS =  -I"include"  -I"../includes" 
+CXXINCS =  -I"lib/gcc/mingw32/3.4.2/include"  -I"include/c++/3.4.2/backward"  -I"include/c++/3.4.2/mingw32"  -I"include/c++/3.4.2"  -I"include"  -I"../includes" 
+BIN  = ../../bin/game.exe
+CXXFLAGS = $(CXXINCS)   -fexpensive-optimizations -O3
+CFLAGS = $(INCS)   -fexpensive-optimizations -O3
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before ../../bin/game.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "..\..\bin\game.exe" $(LIBS)
+
+../../obj/core.o: ../engine/core.cpp
+	$(CPP) -c ../engine/core.cpp -o ../../obj/core.o $(CXXFLAGS)
+
+../../obj/ui.o: ../engine/ui.cpp
+	$(CPP) -c ../engine/ui.cpp -o ../../obj/ui.o $(CXXFLAGS)
+
+../../obj/helper.o: ../engine/helper.cpp
+	$(CPP) -c ../engine/helper.cpp -o ../../obj/helper.o $(CXXFLAGS)
+
+../../obj/level.o: ../engine/level.cpp
+	$(CPP) -c ../engine/level.cpp -o ../../obj/level.o $(CXXFLAGS)
+
+../../obj/math.o: ../engine/math.cpp
+	$(CPP) -c ../engine/math.cpp -o ../../obj/math.o $(CXXFLAGS)
+
+../../obj/renderer.o: ../engine/renderer.cpp
+	$(CPP) -c ../engine/renderer.cpp -o ../../obj/renderer.o $(CXXFLAGS)
+
+../../obj/sprite.o: ../engine/sprite.cpp
+	$(CPP) -c ../engine/sprite.cpp -o ../../obj/sprite.o $(CXXFLAGS)
+
+../../obj/game.o: ../game.cpp
+	$(CPP) -c ../game.cpp -o ../../obj/game.o $(CXXFLAGS)
+
+../../obj/physics.o: ../engine/physics.cpp
+	$(CPP) -c ../engine/physics.cpp -o ../../obj/physics.o $(CXXFLAGS)
+
+../../obj/sound.o: ../engine/sound.cpp
+	$(CPP) -c ../engine/sound.cpp -o ../../obj/sound.o $(CXXFLAGS)
+
+../../obj/filesystem.o: ../engine/filesystem.cpp
+	$(CPP) -c ../engine/filesystem.cpp -o ../../obj/filesystem.o $(CXXFLAGS)
+
+../../obj/leveleditor.o: ../leveleditor.cpp
+	$(CPP) -c ../leveleditor.cpp -o ../../obj/leveleditor.o $(CXXFLAGS)
+
+../../obj/gameobjects.o: ../gameobjects.cpp
+	$(CPP) -c ../gameobjects.cpp -o ../../obj/gameobjects.o $(CXXFLAGS)
+
+../../obj/savethisrock_private.res: savethisrock_private.rc 
+	$(WINDRES) -i savethisrock_private.rc --input-format=rc -o ../../obj/savethisrock_private.res -O coff 

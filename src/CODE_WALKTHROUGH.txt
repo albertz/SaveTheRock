@@ -1,0 +1,200 @@
+/*** Save The Rock v1 - CODE WALKTHROUGH ***/
+
+This document is intended to provide some brief guidelines to reading the game's code.
+
+------------------
+(1) Preface
+------------------
+
+Okay, let's begin. First and foremost, bear in mind that you'll be reading through about 12000 lines of undocumented code.
+It was written by a lone programmer from scratch in a little over 180 hours including debugging and beta testing, which should give you an idea of what to expect.
+Surely, you are familiar with the whooshing sound deadlines make as they fly by and proper documentation would've taken as much as 50 hours off development time.
+I have tried to keep the code as simple and coherent as possible so it should be a light read after all.
+Please, keep in mind that there are A LOT of hacks to make things behave like they should. The engine is not tied with the game logic per se, but it does do some game object specific checks in the physics simulation and the level engine module should be part of the game code instead.
+
+------------------
+(2) Engine design
+------------------
+
+The game engine was written from scratch for the purposes of the game. It consists of several independent modules which export an API which is used by the game objects to simulate and draw themselves.
+
+0) GfxMgr class (core.h)
+The GfxMgr class acts as a kernel to the engine. On initialization it opens an OpenGL window and spawns instances of all other engine modules:
+	* the renderer - renderer* glrenderer;
+	* the scene graph - SceneNode* scene;
+	* the camera scene node - CameraSceneNode* camera;
+	* the input handler - InputHandler* input;
+	* the filesystem path constructor - Filesystem* filesystem;
+	* the textures manager - TexMgr* tex;
+	* the effects manager - SfxMgr* sfx;
+	* the sound manager - SndMgr* snd;
+	* the level scene node - LevelSceneNode* level;
+	* the user interface manager - UIMgr* ui;
+Each of these modules can be accessed by the game code using functions provided by GfxMgr.
+The naming convention for them is 'void get<class name>()'.
+
+Each of these modules functions are briefly described below.
+
+/* side node */
+
+Here are some various functions and constants used throughout the code along with brief descriptions.
+All constants are defined in constants.h.
+	PPT_X - pixels per level tile on the X-axis
+	PPT_Y - pixels per level tile on the Y-axis
+	LEVEL_SIZE_X - maximum level size
+	LEVEL_SIZE_Y
+	various MAX_<name> constants for maximum number of textures, sounds, objects etc.
+
+	vector2 gfx->getRenderer()->getWindowParams();
+Returns the current window height and width.
+
+	vector2 gfx->getMousePos(bool absolute);
+Returns the current mouse position. The single argument determines whether the position returned is absolute (screen coordinates), or not (i.e. in game coordinates that could be larger than the screen size)
+
+/*************/
+
+A) renderer
+The renderer resides in the source files renderer.c and renderer.h. As of now it provides only basic OpenGL drawing functionality through several functions of the type 'void drawSomething(arg1, arg2, ..., argN)' and some optimized functions for drawing text, the level and the background. Due to a bad design decision for storing sprite animations (animations are initially stored as separate frames, which are then compiled into a custom format by the helper program - animationpacker.cpp) sprite drawing code is a hack (you'll see some immediate mode calls).
+Drawing calls expect a DrawPrimitive object, which contains information on how to draw the object - type, vertices, colors etc., and an opengl texture.
+All in all, the rendering code is pretty straightforward, let's move on.
+
+B) scene nodes
+The game engine sports a scene graph represented by the C++ implementation of double-linked lists. Each scene node subclasses the base SceneNode class found in core.h. Everything in the game is implemented as some type of scene node with some objects having more than one.
+On a frame update each scene node's update(float frameDelta) function gets called, which forces the object to update its physics body and draw itself on the screen accordingly. For example, the protagonist of the game is actually represented by three separate scene nodes.
+
+PlayableCharacter : SceneNode {
+	CollisionResponseSceneNode body {
+		...
+		update();
+		...
+	}
+	
+	AnimatedSpriteSceneNode sprite {
+		...
+		update();
+		...
+	}
+	
+	update() {
+		updateChildren();
+	}
+}
+
+The game logic for the hero is contained entirely within the PlayableCharacter class which interfaces with its body (physics simulation) and sprite (rendering). CollisionResponse is a special scene node that registers itself with the physics simulation (see physics). The PlayableCharacter class reads position coordinates from the physics body and updates its sprite accordingly. 
+AnimatedSprite is a scene node for doing sprite animation - you provide it with animation logic, frame timings and frames (in the form of a list of textures), in turn it returns the correct texture you should draw each frame. The list of textures for each object is exported by the texture manager TexMgr (core.h), which takes care of loading textures from the game's custom format (.anim) into OpenGL.
+
+All scene nodes constructors require just one argument - an instance of GfxMgr and each scene node holds an internal pointer to it
+under the name gfx.
+
+Examples:
+	// spawn a ragdoll that uses the crate texture
+	// gfx is the current instance of GfxMgr
+	Ragdoll* ragdoll = new Ragdoll(gfx);
+	ragdoll->init(vector2(positionX, positionY), "CRATE");
+	ragdoll->setActive(true);
+	gfx->addSceneNode(ragdoll, gfx->getCamera());
+	// the second argument to addSceneNode is the parent to which the object is attached, most scene node functions are recursive i.e. they affect not only the callee but all its children.
+	
+C) physics
+The physics engine resides in physics.h and physics.cpp. It uses Verlet integration to calculate motion, which was purely chosen because of the fact that constraints solving and collision response are perfectly simple to do (unlike RK4 for example which would require proper contacts caching and some kind of impulse-based collision response solution) and with some (major) tweaking you can achieve similar results to other itegrators with far less code.
+If you want to add an object to the physics world you would instance the CollisionResponseSceneNode (sprite.h) with a Primitive object as an argument.
+A Primitive (core.h) object contains information about a body's state within the system. After you update the scene node, you can read its current state by polling CollisionResponseSceneNode's getCollisionPrimitive(). Currently supported primitives are circles and convex polygons.
+
+Collision detection is done using SAT for convex polygons and circles, collision response is left to the game object's
+implementation of 'bool receiveCollisionEvent(CollisionEvent event)', which should return true if it has dealt with the collision itself, returning false forces the physics engine to default on its internal response methods (that's actually used for all ragdolls in the game).
+Other movement factors like friction are implemented in the game object's code, most likely as a function called by receiveCollisionEvent();
+
+D) TexMgr, SndMgr and SfxMgr (core.h)
+TexMgr is an engine module which deals with providing textures. Its code should be self-explanatory.
+
+SndMgr is a basic sound output service. It uses the Audiere library as its backend. 
+SndMgr's interface is really simple, as the only function you should call if you want to play a sound is playSound(name, position). Sounds are positional and off screen sounds are muted by default.
+
+SfxMgr provides visual effects. It has several functions of the type spawnEffect(args).
+
+E) UI
+User interface code resides in ui.h. It provides basic implementations of a message box, an input box, a menu and a label.
+All widget types are defined in the UIWIDGET_TYPE struct (ui.h).
+
+Examples:
+	// open up a menu
+	mainMenu = new UIMenu(gfx);
+	mainMenu->setColor(color(0.7f, 0.7f, 0.7f, 1.f));
+	
+	// setMenu(float margin_n, float text_size_n, bool font_n, bool mouseControl_n=true);
+	mainMenu->setMenu(20.f, 36.f, 0);
+	mainMenu->allowClose(true);
+	
+	mainMenu->addMenuOption("exit");
+	mainMenu->addMenuOption("level editor");
+	mainMenu->addMenuOption("settings");
+	mainMenu->addMenuOption("start level");
+	mainMenu->addMenuOption("tutorial");
+	
+	gfx->getUI()->addWidget(mainMenu);
+	mainMenu->setPosition(vector2(100.f, 100.f));
+	mainMenu->fadeIn();
+
+F) Camera (core.h)
+The camera is a special scene node that translates all its children a specific amount. It has two modes - keyboard control (for the level editor) and follow object (for the game itself).
+
+G) Level (level.h)
+
+The level is scene node representing a triangle mesh that is saved and loaded from a bitmap. 
+
+// level parsing
+a tile is a rectangle composed of the four triangles ABCD represented by four bits - DCBA
+
+*-------*
+| * C * |
+| D * B |
+| * A * |
+*-------*
+
+levels are saved as an array of bools representing fully filled tiles, this makes it possible to have large levels
+for a tiny bit of memory (a 512x512 tiles level costs only 32kb).
+each tile has eight neighbors (we define that neighbors of border tiles that are outside the level are fully filled tiles)
+we are interested only in four of them
+ ___ ___ ___
+|   | C |   |
+|___|___|___|
+| D | X | B |
+|___|___|___|
+|   | A |   |
+|___|___|___|
+
+In order for a level to look somewhat better we compute 45 degree slanted tiles from the level bitmap.
+Slanted tiles are computed by the following algorithm:
+
+///
+for each empty non-border tile:
+	tile = map[x][y];
+	tile_bitmap = 0
+	// set the state of each neighbor according to the level bitmap
+	neighbors_bitmap = map[x-1][y] << 3 + map[x][y+1] << 2 + map[x+1][y] << 1 + map[x][y-1]
+	// if the neighboring tiles are more than 2 and not A and C or B and D set tile as slanted
+	if (neighbors_bitmap > 3) or (neighbors_bitmap == 5) or (neighbors_bitmap == 10):
+		tile_bitmap = neighbors_bitmap
+///
+
+Objects in the level are saved as a string and a vector2 representing a position. 
+The string is a human-readable description of the object. Its syntax is defined in level.h.
+
+H) Input Handler
+The input handler is an engine module that deals with keyboard and mouse input.
+It is automatically initilized by GfxMgr. Scene nodes can register themselves to receive events by calling
+gfx->getInputHandler()->addReceiver(SceneNode* node);
+and unregister with
+gfx->getInputHandler()->delReceiver(SceneNode* node);
+
+UI menus and inputboxes take and release full control (i.e. no other scene nodes are polled for events) over the input while they're active by calling gfx->getInputHandler()->takeControl() and releaseControl() respectively.
+
+I) Filesystem
+
+The filesystem module builds paths to game data. It is the only OS-specific module and is the only thing that has to be ported in order for the game to compile on Linux. Its code should be self-explanatory.
+
+
+
+****
+
+Well, there it is, I hope my notes would prove useful.
