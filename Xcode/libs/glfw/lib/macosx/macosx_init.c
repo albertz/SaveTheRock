@@ -142,7 +142,8 @@ int _glfwPlatformInit( void )
 
     _glfwInitThreads();
 
-    _glfwChangeToResourcesDirectory();
+	// NOTE: Don't change in there, we do the handling in STR code.
+    //_glfwChangeToResourcesDirectory();
 
     if( !_glfwInstallEventHandlers() )
     {
