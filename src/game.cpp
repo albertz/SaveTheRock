@@ -763,7 +763,38 @@ GameEventHandler* Game::getGameEventHandler() {
 	return eventhandler;
 }
 
-int main() {
+// TODO move out once we overtake OLX utils code
+static size_t findLastPathSep(const std::string& path) {
+	size_t slash = path.rfind('\\');
+	size_t slash2 = path.rfind('/');
+	if(slash == std::string::npos)
+		slash = slash2;
+	else if(slash2 != std::string::npos)
+		slash = std::max(slash, slash2);
+	return slash;
+}
+
+int main(int argc, char** argv) {
+#ifdef __APPLE__
+	std::string binary_dir;
+	if(argc >= 1) {
+		binary_dir = argv[0];
+		size_t slashpos = findLastPathSep(binary_dir);
+		if(slashpos != std::string::npos)  {
+			binary_dir.erase(slashpos);
+			//binary_dir = SystemNativeToUtf8(binary_dir);
+		} else
+			binary_dir = ".";
+	} else {
+		std::cout << "Warning: Binary-argument not given, assuming current dir" << std::endl;
+		binary_dir = ".";
+	}
+	
+	std::string mediadir = binary_dir + "/../Resources/media";
+	std::cout << "Media dir: " << mediadir << std::endl;
+	chdir(mediadir.c_str());
+#endif
+	
 	srand(time(NULL));
 
 	float frameDelta = 0.f;
