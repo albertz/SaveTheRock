@@ -117,10 +117,13 @@ void Filesystem::freeMemory(FILESYSTEM_MEMORY type) {
 }
 
 #else
+static std::list<char*> musicfiles;
+static std::list<char*> customlevels;
+
 Filesystem::Filesystem() {}
-char* Filesystem::getLevelFilename(char* name, bool special) {}
-std::list<char*>* Filesystem::getCustomLevels() {}
-std::list<char*>* Filesystem::getMusicFiles() {}
-char* Filesystem::getSoundFilename(char* name) {}
+char* Filesystem::getLevelFilename(char* name, bool special) { return NULL; }
+std::list<char*>* Filesystem::getCustomLevels() { return &customlevels; }
+std::list<char*>* Filesystem::getMusicFiles() { return &musicfiles; }
+char* Filesystem::getSoundFilename(char* name) { return NULL; }
 void Filesystem::freeMemory(FILESYSTEM_MEMORY type) {}
 #endif
