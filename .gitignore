@@ -5,3 +5,5 @@ Makefile
 *.pbxuser
 build
 *.log
+*.patch
+
