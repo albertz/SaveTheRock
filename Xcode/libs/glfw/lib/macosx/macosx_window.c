@@ -371,7 +371,7 @@ OSStatus _glfwMouseEventHandler( EventHandlerCallRef handlerCallRef,
                 if( axis == kEventMouseWheelAxisY &&
                     GetEventParameter( event,
                                        kEventParamMouseWheelDelta,
-                                       typeLongInteger,
+                                       typeSInt32,
                                        NULL,
                                        sizeof( long ),
                                        NULL,
@@ -445,7 +445,7 @@ EventTypeSpec GLFW_WINDOW_EVENT_TYPES[] =
 {
   { kEventClassWindow, kEventWindowBoundsChanged },
   { kEventClassWindow, kEventWindowClose },
-  { kEventClassWindow, kEventWindowDrawContent },
+  { kEventClassWindow, /*kEventWindowDrawContent*/ 2 },
   { kEventClassWindow, kEventWindowActivated },
   { kEventClassWindow, kEventWindowDeactivated },
 };
@@ -503,7 +503,7 @@ OSStatus _glfwWindowEventHandler( EventHandlerCallRef handlerCallRef,
       	    return noErr;
     	}
 
-    	case kEventWindowDrawContent:
+    	case /*kEventWindowDrawContent*/ 2:
     	{
 	    // Call user callback function
             if( _glfwWin.WindowRefreshCallback )
