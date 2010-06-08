@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		239C70F211B9CDA600E930A5 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70CB11B9CDA600E930A5 /* core.cpp */; };
+		239C70F311B9CDA600E930A5 /* filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70CC11B9CDA600E930A5 /* filesystem.cpp */; };
+		239C70F411B9CDA600E930A5 /* helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70CD11B9CDA600E930A5 /* helper.cpp */; };
+		239C70F511B9CDA600E930A5 /* level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70CE11B9CDA600E930A5 /* level.cpp */; };
+		239C70F611B9CDA600E930A5 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70CF11B9CDA600E930A5 /* math.cpp */; };
+		239C70F711B9CDA600E930A5 /* physics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D011B9CDA600E930A5 /* physics.cpp */; };
+		239C70F811B9CDA600E930A5 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D111B9CDA600E930A5 /* renderer.cpp */; };
+		239C70F911B9CDA600E930A5 /* sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D211B9CDA600E930A5 /* sound.cpp */; };
+		239C70FA11B9CDA600E930A5 /* sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D311B9CDA600E930A5 /* sprite.cpp */; };
+		239C70FB11B9CDA600E930A5 /* ui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D411B9CDA600E930A5 /* ui.cpp */; };
+		239C70FC11B9CDA600E930A5 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D511B9CDA600E930A5 /* game.cpp */; };
+		239C70FD11B9CDA600E930A5 /* gameobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70D611B9CDA600E930A5 /* gameobjects.cpp */; };
+		239C70FE11B9CDA600E930A5 /* leveleditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C70EA11B9CDA600E930A5 /* leveleditor.cpp */; };
+		239C711511B9CF1800E930A5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C711411B9CF1800E930A5 /* OpenGL.framework */; };
+		239C715B11B9D6DA00E930A5 /* enable.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712A11B9D6DA00E930A5 /* enable.c */; };
+		239C715C11B9D6DA00E930A5 /* fullscreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712B11B9D6DA00E930A5 /* fullscreen.c */; };
+		239C715D11B9D6DA00E930A5 /* glext.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712C11B9D6DA00E930A5 /* glext.c */; };
+		239C715E11B9D6DA00E930A5 /* image.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712D11B9D6DA00E930A5 /* image.c */; };
+		239C715F11B9D6DA00E930A5 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712E11B9D6DA00E930A5 /* init.c */; };
+		239C716011B9D6DA00E930A5 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C712F11B9D6DA00E930A5 /* input.c */; };
+		239C716111B9D6DA00E930A5 /* joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713111B9D6DA00E930A5 /* joystick.c */; };
+		239C716211B9D6DA00E930A5 /* macosx_enable.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713311B9D6DA00E930A5 /* macosx_enable.c */; };
+		239C716311B9D6DA00E930A5 /* macosx_fullscreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713411B9D6DA00E930A5 /* macosx_fullscreen.c */; };
+		239C716411B9D6DA00E930A5 /* macosx_glext.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713511B9D6DA00E930A5 /* macosx_glext.c */; };
+		239C716511B9D6DA00E930A5 /* macosx_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713611B9D6DA00E930A5 /* macosx_init.c */; };
+		239C716611B9D6DA00E930A5 /* macosx_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713711B9D6DA00E930A5 /* macosx_joystick.c */; };
+		239C716711B9D6DA00E930A5 /* macosx_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713811B9D6DA00E930A5 /* macosx_thread.c */; };
+		239C716811B9D6DA00E930A5 /* macosx_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713911B9D6DA00E930A5 /* macosx_time.c */; };
+		239C716911B9D6DA00E930A5 /* macosx_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713A11B9D6DA00E930A5 /* macosx_window.c */; };
+		239C716A11B9D6DA00E930A5 /* stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713C11B9D6DA00E930A5 /* stream.c */; };
+		239C716B11B9D6DA00E930A5 /* tga.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713D11B9D6DA00E930A5 /* tga.c */; };
+		239C716C11B9D6DA00E930A5 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713E11B9D6DA00E930A5 /* thread.c */; };
+		239C716D11B9D6DA00E930A5 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713F11B9D6DA00E930A5 /* time.c */; };
+		239C717B11B9D6DA00E930A5 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C714F11B9D6DA00E930A5 /* window.c */; };
+		256AC3DA0F4B6AC300CF3369 /* Save_the_rockAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* Save_the_rockAppDelegate.m */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		239C70CB11B9CDA600E930A5 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
+		239C70CC11B9CDA600E930A5 /* filesystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = filesystem.cpp; sourceTree = "<group>"; };
+		239C70CD11B9CDA600E930A5 /* helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = helper.cpp; sourceTree = "<group>"; };
+		239C70CE11B9CDA600E930A5 /* level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = level.cpp; sourceTree = "<group>"; };
+		239C70CF11B9CDA600E930A5 /* math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = math.cpp; sourceTree = "<group>"; };
+		239C70D011B9CDA600E930A5 /* physics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics.cpp; sourceTree = "<group>"; };
+		239C70D111B9CDA600E930A5 /* renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
+		239C70D211B9CDA600E930A5 /* sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sound.cpp; sourceTree = "<group>"; };
+		239C70D311B9CDA600E930A5 /* sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
+		239C70D411B9CDA600E930A5 /* ui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ui.cpp; sourceTree = "<group>"; };
+		239C70D511B9CDA600E930A5 /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
+		239C70D611B9CDA600E930A5 /* gameobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameobjects.cpp; sourceTree = "<group>"; };
+		239C70D911B9CDA600E930A5 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		239C70DA11B9CDA600E930A5 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		239C70DB11B9CDA600E930A5 /* filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filesystem.h; sourceTree = "<group>"; };
+		239C70DC11B9CDA600E930A5 /* headers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headers.h; sourceTree = "<group>"; };
+		239C70DD11B9CDA600E930A5 /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
+		239C70DE11B9CDA600E930A5 /* level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = level.h; sourceTree = "<group>"; };
+		239C70DF11B9CDA600E930A5 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		239C70E011B9CDA600E930A5 /* math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = math.h; sourceTree = "<group>"; };
+		239C70E111B9CDA600E930A5 /* physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics.h; sourceTree = "<group>"; };
+		239C70E211B9CDA600E930A5 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
+		239C70E311B9CDA600E930A5 /* sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sound.h; sourceTree = "<group>"; };
+		239C70E411B9CDA600E930A5 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
+		239C70E511B9CDA600E930A5 /* ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
+		239C70E611B9CDA600E930A5 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
+		239C70E711B9CDA600E930A5 /* gameobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gameobjects.h; sourceTree = "<group>"; };
+		239C70E811B9CDA600E930A5 /* headers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headers.h; sourceTree = "<group>"; };
+		239C70E911B9CDA600E930A5 /* leveleditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = leveleditor.h; sourceTree = "<group>"; };
+		239C70EA11B9CDA600E930A5 /* leveleditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = leveleditor.cpp; sourceTree = "<group>"; };
+		239C711411B9CF1800E930A5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		239C712A11B9D6DA00E930A5 /* enable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = enable.c; path = libs/glfw/lib/enable.c; sourceTree = "<group>"; };
+		239C712B11B9D6DA00E930A5 /* fullscreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fullscreen.c; path = libs/glfw/lib/fullscreen.c; sourceTree = "<group>"; };
+		239C712C11B9D6DA00E930A5 /* glext.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glext.c; path = libs/glfw/lib/glext.c; sourceTree = "<group>"; };
+		239C712D11B9D6DA00E930A5 /* image.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image.c; path = libs/glfw/lib/image.c; sourceTree = "<group>"; };
+		239C712E11B9D6DA00E930A5 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = libs/glfw/lib/init.c; sourceTree = "<group>"; };
+		239C712F11B9D6DA00E930A5 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = input.c; path = libs/glfw/lib/input.c; sourceTree = "<group>"; };
+		239C713011B9D6DA00E930A5 /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal.h; path = libs/glfw/lib/internal.h; sourceTree = "<group>"; };
+		239C713111B9D6DA00E930A5 /* joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = joystick.c; path = libs/glfw/lib/joystick.c; sourceTree = "<group>"; };
+		239C713311B9D6DA00E930A5 /* macosx_enable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_enable.c; sourceTree = "<group>"; };
+		239C713411B9D6DA00E930A5 /* macosx_fullscreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_fullscreen.c; sourceTree = "<group>"; };
+		239C713511B9D6DA00E930A5 /* macosx_glext.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_glext.c; sourceTree = "<group>"; };
+		239C713611B9D6DA00E930A5 /* macosx_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_init.c; sourceTree = "<group>"; };
+		239C713711B9D6DA00E930A5 /* macosx_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_joystick.c; sourceTree = "<group>"; };
+		239C713811B9D6DA00E930A5 /* macosx_thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_thread.c; sourceTree = "<group>"; };
+		239C713911B9D6DA00E930A5 /* macosx_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_time.c; sourceTree = "<group>"; };
+		239C713A11B9D6DA00E930A5 /* macosx_window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macosx_window.c; sourceTree = "<group>"; };
+		239C713B11B9D6DA00E930A5 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		239C713C11B9D6DA00E930A5 /* stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stream.c; path = libs/glfw/lib/stream.c; sourceTree = "<group>"; };
+		239C713D11B9D6DA00E930A5 /* tga.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tga.c; path = libs/glfw/lib/tga.c; sourceTree = "<group>"; };
+		239C713E11B9D6DA00E930A5 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = thread.c; path = libs/glfw/lib/thread.c; sourceTree = "<group>"; };
+		239C713F11B9D6DA00E930A5 /* time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = time.c; path = libs/glfw/lib/time.c; sourceTree = "<group>"; };
+		239C714F11B9D6DA00E930A5 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = window.c; path = libs/glfw/lib/window.c; sourceTree = "<group>"; };
+		256AC3D80F4B6AC300CF3369 /* Save_the_rockAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Save_the_rockAppDelegate.h; sourceTree = "<group>"; };
+		256AC3D90F4B6AC300CF3369 /* Save_the_rockAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Save_the_rockAppDelegate.m; sourceTree = "<group>"; };
+		256AC3F00F4B6AF500CF3369 /* Save_the_rock_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Save_the_rock_Prefix.pch; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107310486CEB800E47090 /* Save_the_rock-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Save_the_rock-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Save the rock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Save the rock.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				239C711511B9CF1800E930A5 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3D80F4B6AC300CF3369 /* Save_the_rockAppDelegate.h */,
+				256AC3D90F4B6AC300CF3369 /* Save_the_rockAppDelegate.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Save the rock.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		239C70C211B9CDA600E930A5 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				239C70CA11B9CDA600E930A5 /* engine */,
+				239C70D511B9CDA600E930A5 /* game.cpp */,
+				239C70D611B9CDA600E930A5 /* gameobjects.cpp */,
+				239C70D711B9CDA600E930A5 /* includes */,
+				239C70EA11B9CDA600E930A5 /* leveleditor.cpp */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = SOURCE_ROOT;
+		};
+		239C70CA11B9CDA600E930A5 /* engine */ = {
+			isa = PBXGroup;
+			children = (
+				239C70CB11B9CDA600E930A5 /* core.cpp */,
+				239C70CC11B9CDA600E930A5 /* filesystem.cpp */,
+				239C70CD11B9CDA600E930A5 /* helper.cpp */,
+				239C70CE11B9CDA600E930A5 /* level.cpp */,
+				239C70CF11B9CDA600E930A5 /* math.cpp */,
+				239C70D011B9CDA600E930A5 /* physics.cpp */,
+				239C70D111B9CDA600E930A5 /* renderer.cpp */,
+				239C70D211B9CDA600E930A5 /* sound.cpp */,
+				239C70D311B9CDA600E930A5 /* sprite.cpp */,
+				239C70D411B9CDA600E930A5 /* ui.cpp */,
+			);
+			path = engine;
+			sourceTree = "<group>";
+		};
+		239C70D711B9CDA600E930A5 /* includes */ = {
+			isa = PBXGroup;
+			children = (
+				239C70D811B9CDA600E930A5 /* engine */,
+				239C70E611B9CDA600E930A5 /* game.h */,
+				239C70E711B9CDA600E930A5 /* gameobjects.h */,
+				239C70E811B9CDA600E930A5 /* headers.h */,
+				239C70E911B9CDA600E930A5 /* leveleditor.h */,
+			);
+			path = includes;
+			sourceTree = "<group>";
+		};
+		239C70D811B9CDA600E930A5 /* engine */ = {
+			isa = PBXGroup;
+			children = (
+				239C70D911B9CDA600E930A5 /* constants.h */,
+				239C70DA11B9CDA600E930A5 /* core.h */,
+				239C70DB11B9CDA600E930A5 /* filesystem.h */,
+				239C70DC11B9CDA600E930A5 /* headers.h */,
+				239C70DD11B9CDA600E930A5 /* helper.h */,
+				239C70DE11B9CDA600E930A5 /* level.h */,
+				239C70DF11B9CDA600E930A5 /* main.h */,
+				239C70E011B9CDA600E930A5 /* math.h */,
+				239C70E111B9CDA600E930A5 /* physics.h */,
+				239C70E211B9CDA600E930A5 /* renderer.h */,
+				239C70E311B9CDA600E930A5 /* sound.h */,
+				239C70E411B9CDA600E930A5 /* sprite.h */,
+				239C70E511B9CDA600E930A5 /* ui.h */,
+			);
+			path = engine;
+			sourceTree = "<group>";
+		};
+		239C712811B9D6C100E930A5 /* GLFW */ = {
+			isa = PBXGroup;
+			children = (
+				239C712A11B9D6DA00E930A5 /* enable.c */,
+				239C712B11B9D6DA00E930A5 /* fullscreen.c */,
+				239C712C11B9D6DA00E930A5 /* glext.c */,
+				239C712D11B9D6DA00E930A5 /* image.c */,
+				239C712E11B9D6DA00E930A5 /* init.c */,
+				239C712F11B9D6DA00E930A5 /* input.c */,
+				239C713011B9D6DA00E930A5 /* internal.h */,
+				239C713111B9D6DA00E930A5 /* joystick.c */,
+				239C713211B9D6DA00E930A5 /* macosx */,
+				239C713C11B9D6DA00E930A5 /* stream.c */,
+				239C713D11B9D6DA00E930A5 /* tga.c */,
+				239C713E11B9D6DA00E930A5 /* thread.c */,
+				239C713F11B9D6DA00E930A5 /* time.c */,
+				239C714F11B9D6DA00E930A5 /* window.c */,
+			);
+			name = GLFW;
+			sourceTree = "<group>";
+		};
+		239C713211B9D6DA00E930A5 /* macosx */ = {
+			isa = PBXGroup;
+			children = (
+				239C713311B9D6DA00E930A5 /* macosx_enable.c */,
+				239C713411B9D6DA00E930A5 /* macosx_fullscreen.c */,
+				239C713511B9D6DA00E930A5 /* macosx_glext.c */,
+				239C713611B9D6DA00E930A5 /* macosx_init.c */,
+				239C713711B9D6DA00E930A5 /* macosx_joystick.c */,
+				239C713811B9D6DA00E930A5 /* macosx_thread.c */,
+				239C713911B9D6DA00E930A5 /* macosx_time.c */,
+				239C713A11B9D6DA00E930A5 /* macosx_window.c */,
+				239C713B11B9D6DA00E930A5 /* platform.h */,
+			);
+			name = macosx;
+			path = libs/glfw/lib/macosx;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Save the rock */ = {
+			isa = PBXGroup;
+			children = (
+				239C712811B9D6C100E930A5 /* GLFW */,
+				239C70C211B9CDA600E930A5 /* src */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				239C711411B9CF1800E930A5 /* OpenGL.framework */,
+			);
+			name = "Save the rock";
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3F00F4B6AF500CF3369 /* Save_the_rock_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Save_the_rock-Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Save the rock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Save the rock" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Save the rock";
+			productInstallPath = "$(HOME)/Applications";
+			productName = "Save the rock";
+			productReference = 8D1107320486CEB800E47090 /* Save the rock.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Save the rock" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Save the rock */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Save the rock */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				256AC3DA0F4B6AC300CF3369 /* Save_the_rockAppDelegate.m in Sources */,
+				239C70F211B9CDA600E930A5 /* core.cpp in Sources */,
+				239C70F311B9CDA600E930A5 /* filesystem.cpp in Sources */,
+				239C70F411B9CDA600E930A5 /* helper.cpp in Sources */,
+				239C70F511B9CDA600E930A5 /* level.cpp in Sources */,
+				239C70F611B9CDA600E930A5 /* math.cpp in Sources */,
+				239C70F711B9CDA600E930A5 /* physics.cpp in Sources */,
+				239C70F811B9CDA600E930A5 /* renderer.cpp in Sources */,
+				239C70F911B9CDA600E930A5 /* sound.cpp in Sources */,
+				239C70FA11B9CDA600E930A5 /* sprite.cpp in Sources */,
+				239C70FB11B9CDA600E930A5 /* ui.cpp in Sources */,
+				239C70FC11B9CDA600E930A5 /* game.cpp in Sources */,
+				239C70FD11B9CDA600E930A5 /* gameobjects.cpp in Sources */,
+				239C70FE11B9CDA600E930A5 /* leveleditor.cpp in Sources */,
+				239C715B11B9D6DA00E930A5 /* enable.c in Sources */,
+				239C715C11B9D6DA00E930A5 /* fullscreen.c in Sources */,
+				239C715D11B9D6DA00E930A5 /* glext.c in Sources */,
+				239C715E11B9D6DA00E930A5 /* image.c in Sources */,
+				239C715F11B9D6DA00E930A5 /* init.c in Sources */,
+				239C716011B9D6DA00E930A5 /* input.c in Sources */,
+				239C716111B9D6DA00E930A5 /* joystick.c in Sources */,
+				239C716211B9D6DA00E930A5 /* macosx_enable.c in Sources */,
+				239C716311B9D6DA00E930A5 /* macosx_fullscreen.c in Sources */,
+				239C716411B9D6DA00E930A5 /* macosx_glext.c in Sources */,
+				239C716511B9D6DA00E930A5 /* macosx_init.c in Sources */,
+				239C716611B9D6DA00E930A5 /* macosx_joystick.c in Sources */,
+				239C716711B9D6DA00E930A5 /* macosx_thread.c in Sources */,
+				239C716811B9D6DA00E930A5 /* macosx_time.c in Sources */,
+				239C716911B9D6DA00E930A5 /* macosx_window.c in Sources */,
+				239C716A11B9D6DA00E930A5 /* stream.c in Sources */,
+				239C716B11B9D6DA00E930A5 /* tga.c in Sources */,
+				239C716C11B9D6DA00E930A5 /* thread.c in Sources */,
+				239C716D11B9D6DA00E930A5 /* time.c in Sources */,
+				239C717B11B9D6DA00E930A5 /* window.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../src/includes",
+					"$(SRCROOT)/libs/glfw/include",
+					"$(SRCROOT)/libs/audiere/src",
+				);
+				INFOPLIST_FILE = "Save_the_rock-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "Save the rock";
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../src/includes",
+					"$(SRCROOT)/libs/glfw/include",
+					"$(SRCROOT)/libs/audiere/src",
+				);
+				INFOPLIST_FILE = "Save_the_rock-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "Save the rock";
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Save the rock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Save the rock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
