@@ -3,4 +3,5 @@
 Makefile
 *.mode2v3
 *.pbxuser
-
+build
+*.log
