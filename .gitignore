@@ -1,4 +1,6 @@
 .svn
 .o
 Makefile
+*.mode2v3
+*.pbxuser
 
