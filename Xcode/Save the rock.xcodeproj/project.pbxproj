@@ -42,6 +42,8 @@
 		239C716C11B9D6DA00E930A5 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713E11B9D6DA00E930A5 /* thread.c */; };
 		239C716D11B9D6DA00E930A5 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C713F11B9D6DA00E930A5 /* time.c */; };
 		239C717B11B9D6DA00E930A5 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 239C714F11B9D6DA00E930A5 /* window.c */; };
+		239C719011B9D95C00E930A5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C718F11B9D95C00E930A5 /* Carbon.framework */; };
+		239C719211B9D96100E930A5 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C719111B9D96100E930A5 /* AGL.framework */; };
 		256AC3DA0F4B6AC300CF3369 /* Save_the_rockAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* Save_the_rockAppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -106,6 +108,8 @@
 		239C713E11B9D6DA00E930A5 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = thread.c; path = libs/glfw/lib/thread.c; sourceTree = "<group>"; };
 		239C713F11B9D6DA00E930A5 /* time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = time.c; path = libs/glfw/lib/time.c; sourceTree = "<group>"; };
 		239C714F11B9D6DA00E930A5 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = window.c; path = libs/glfw/lib/window.c; sourceTree = "<group>"; };
+		239C718F11B9D95C00E930A5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		239C719111B9D96100E930A5 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = System/Library/Frameworks/AGL.framework; sourceTree = SDKROOT; };
 		256AC3D80F4B6AC300CF3369 /* Save_the_rockAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Save_the_rockAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* Save_the_rockAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Save_the_rockAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* Save_the_rock_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Save_the_rock_Prefix.pch; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				239C711511B9CF1800E930A5 /* OpenGL.framework in Frameworks */,
+				239C719011B9D95C00E930A5 /* Carbon.framework in Frameworks */,
+				239C719211B9D96100E930A5 /* AGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +281,8 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				239C711411B9CF1800E930A5 /* OpenGL.framework */,
+				239C718F11B9D95C00E930A5 /* Carbon.framework */,
+				239C719111B9D96100E930A5 /* AGL.framework */,
 			);
 			name = "Save the rock";
 			sourceTree = "<group>";
@@ -426,6 +434,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
