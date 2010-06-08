@@ -28,15 +28,20 @@
 #define MAX_PATH 512
 #endif
 
-#include <GL/glfw.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#else
 #include <GL/glext.h>
+#endif
+#include <GL/glfw.h>
 
 #include <audiere.h>
 
 // game engine includes
 #include "filesystem.h"
 #include "helper.h"
-#include "math.h"
+#include "rockmath.h"
 #include "sound.h"
 #include "renderer.h"
 #include "core.h"
