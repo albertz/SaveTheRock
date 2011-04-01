@@ -187,7 +187,7 @@ namespace audiere {
     const std::string& name,
     const ParameterList& parameters)
   {
-    ADR_GUARD("DoOpenDevice");
+    ADR_GUARD("DoOpenDevice " + name);
 
     #ifdef _MSC_VER
 
