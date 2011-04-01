@@ -80,11 +80,11 @@ class LevelSceneNode : public SceneNode {
 		std::list<Primitive*> getGeometry(aabb2 bounds);
 		void setShowNames(bool state);
 		void setShowNamedPositions(bool state);
-		void addNamedPosition(vector2 coords, char* string);
+		void addNamedPosition(vector2 coords, const char* string);
 		void delNamedPosition(int index);
 		int getNamedPositionsN();
 		char* getNamedPosString(int index);
-		char* getNamedPosValue(int index, char* var_n);
+		char* getNamedPosValue(int index, const char* var_n);
 		vector2 getNamedPosPosition(int index);
 		SceneNode* getObjectByName(char* name);
 		int checkNamedPosArea(aabb2 bb);

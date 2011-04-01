@@ -360,7 +360,7 @@ void LevelSceneNode::setShowNamedPositions(bool state) {
 	showNamedPositions = state;
 }
 
-void LevelSceneNode::addNamedPosition(vector2 coords, char* string) {
+void LevelSceneNode::addNamedPosition(vector2 coords, const char* string) {
 	named_positions[named_positions_n].xy[0] = coords[0];
 	named_positions[named_positions_n].xy[1] = coords[1];
 	int string_len = strlen(string);
@@ -405,7 +405,7 @@ char* LevelSceneNode::getNamedPosString(int index) {
 	return named_positions[index].string;
 }
 
-char* LevelSceneNode::getNamedPosValue(int index, char* var_n) {
+char* LevelSceneNode::getNamedPosValue(int index, const char* var_n) {
 	if(index >= named_positions_n || index < 0) return NULL;
 	parseNamedPositionString(named_positions[index].string);
 
