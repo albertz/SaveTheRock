@@ -803,7 +803,7 @@ int main(int argc, char** argv) {
 	Game* game = new Game();
 	game->changeState(STATE_DATABASE_READ);
 	char title[40];
-	char fpstext[3];
+	char fpstext[10];
 
 	int phys_iterations = DEFAULT_PHYS_ITERATIONS;
 	int phys_threshold = phys_iterations * 10;
