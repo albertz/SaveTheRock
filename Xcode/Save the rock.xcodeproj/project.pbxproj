@@ -24,11 +24,6 @@
 		239C711511B9CF1800E930A5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C711411B9CF1800E930A5 /* OpenGL.framework */; };
 		239C719011B9D95C00E930A5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C718F11B9D95C00E930A5 /* Carbon.framework */; };
 		239C719211B9D96100E930A5 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C719111B9D96100E930A5 /* AGL.framework */; };
-		239C71FC11B9DC1200E930A5 /* audiere.rc in Resources */ = {isa = PBXBuildFile; fileRef = 239C71A411B9DC1200E930A5 /* audiere.rc */; };
-		239C721711B9DC1200E930A5 /* Makefile.am in Resources */ = {isa = PBXBuildFile; fileRef = 239C71D411B9DC1200E930A5 /* Makefile.am */; };
-		239C721C11B9DC1200E930A5 /* Makefile.am in Resources */ = {isa = PBXBuildFile; fileRef = 239C71DD11B9DC1200E930A5 /* Makefile.am */; };
-		239C721E11B9DC1200E930A5 /* SConscript in Resources */ = {isa = PBXBuildFile; fileRef = 239C71E211B9DC1200E930A5 /* SConscript */; };
-		239C722211B9DC1200E930A5 /* SConscript in Resources */ = {isa = PBXBuildFile; fileRef = 239C71E811B9DC1200E930A5 /* SConscript */; };
 		239C727711B9DF2600E930A5 /* basic_source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C71A511B9DC1200E930A5 /* basic_source.cpp */; };
 		239C727811B9DF2600E930A5 /* cd_null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C71A711B9DC1200E930A5 /* cd_null.cpp */; };
 		239C727911B9DF2600E930A5 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239C71AA11B9DC1200E930A5 /* debug.cpp */; };
@@ -631,11 +626,6 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				239C71FC11B9DC1200E930A5 /* audiere.rc in Resources */,
-				239C721711B9DC1200E930A5 /* Makefile.am in Resources */,
-				239C721C11B9DC1200E930A5 /* Makefile.am in Resources */,
-				239C721E11B9DC1200E930A5 /* SConscript in Resources */,
-				239C722211B9DC1200E930A5 /* SConscript in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
