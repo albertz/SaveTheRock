@@ -21,7 +21,6 @@ SceneNode::SceneNode() {
 	_markForDeletion = false;
 	_collisionReady = false;
 	go_type = GO_TYPE_NONE;	
-	name = NULL;
 }	
 
 SceneNode::~SceneNode() {
@@ -29,14 +28,11 @@ SceneNode::~SceneNode() {
 	delete children;
 }
 
-void SceneNode::setName(const char* newName) {
-	if(name) delete name;
-	name = new char[strlen(newName)+1];
-	for(int x=0; x<strlen(newName); x++) name[x] = newName[x];
-	name[strlen(newName)] = 0;
+void SceneNode::setName(const std::string& newName) {
+	name = newName;
 }
 
-char* SceneNode::getName() {
+std::string SceneNode::getName() {
 	return name;
 }
 
@@ -288,20 +284,17 @@ TexMgr::TexMgr(GfxMgr* gfx_n) {
 	textures_frames_n = new int[MAX_TEXTURES];
 	textures_sizes = new vector2[MAX_TEXTURES];
 	textures_real_sizes = new vector2[MAX_TEXTURES];
-	textures_names = new char*[MAX_TEXTURES];
+	textures_names = new std::string[MAX_TEXTURES];
 	textures_n = 0;
 }
 
-void TexMgr::addTexture(const char* name, const char* filepath) {
-	int frames_n, size_x, size_y, real_size_x, real_size_y, len;
+void TexMgr::addTexture(const std::string& name, const std::string& filepath) {
+	int frames_n, size_x, size_y, real_size_x, real_size_y;
 	textures[textures_n] = gfx->getRenderer()->loadTexturesFromFile(filepath, &frames_n, &size_x, &size_y, &real_size_x, &real_size_y);
 	textures_sizes[textures_n] = vector2(size_x, size_y);
 	textures_real_sizes[textures_n] = vector2(real_size_x, real_size_y);
 	textures_frames_n[textures_n] = frames_n;
-	len = strlen(name);
-	textures_names[textures_n] = new char[MAX_TEXTURE_NAME];
-	for(int x=0; x < len; x++) textures_names[textures_n][x] = name[x];
-	textures_names[textures_n][len] = 0;
+	textures_names[textures_n] = name;
 	textures_n++;	
 }
 
@@ -332,10 +325,10 @@ void TexMgr::init() {
 
 }
 
-int TexMgr::getId(const char* name) {
+int TexMgr::getId(const std::string& name) {
 	for(int x=0; x < textures_n; x++) {
-		if(strcmp(textures_names[x], name) == 0) {
-			return x;	
+		if(textures_names[x] == name) {
+			return x;
 		}
 	}
 	return -1;
@@ -464,7 +457,7 @@ void GfxMgr::C_updateCursor(float frameDelta) {
 	}
 }
 
-void GfxMgr::setWindowTitle(char* title) {
+void GfxMgr::setWindowTitle(std::string title) {
 	glrenderer->setWindowTitle(title);	
 }
 

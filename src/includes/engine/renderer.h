@@ -6,6 +6,8 @@
 #ifndef __RENDERER_H
 #define __RENDERER_H
 
+#include <string>
+
 // opengl renderer
 
 struct DrawPrimitive;
@@ -79,7 +81,7 @@ class renderer {
 	int* generateBackgroundHeightmap(int tiles_x, int tiles_y);
 	void generateBackground(unsigned int texture, float tex_size_x, float tex_size_y);
 	void drawBackground(vector2 displacement, aabb2 view_bb);
-	void drawText(char* string, int len, bool font, float size, color clr, vector2 position);
+	void drawText(const std::string& string, int len, bool font, float size, color clr, vector2 position);
 	void drawLine(vector2 a, vector2 b, color clr_a, color clr_b, bool glowing=false);
 	void drawFilledCircle(vector2 center, float radius, color clr);
 	void drawCircle(vector2 center, float radius, int segments=50);
@@ -96,7 +98,7 @@ class renderer {
 	/********************/	
 	
 	renderer(int width, int height, bool fs, bool vsync, int fsaa);
-	void setWindowTitle(char* title);
+	void setWindowTitle(const std::string& title);
 	void frameStart(vector2 bg_displacement, aabb2 view_bb);
 	void frameEnd();
 	void generateVBO(unsigned int* id);
@@ -109,7 +111,7 @@ class renderer {
 	void drawLevelVBO(float* vertex_list, int vl_ptr);
 	void redrawLevel();
 	void drawSprite(DrawPrimitive* x, unsigned int texture);
-	unsigned int* loadTexturesFromFile(const char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret);
+	unsigned int* loadTexturesFromFile(const std::string& filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret);
 	unsigned int loadTextureRGB(char* data, vector2 size);
 	vector2 getWindowParams();
 };

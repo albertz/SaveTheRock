@@ -34,8 +34,6 @@ LevelSceneNode::LevelSceneNode(GfxMgr* gfx_n) {
 	_markForDeletion = 0;
 	showNames = false;
 	showNamedPositions = false;
-	named_pos_vars = NULL;
-	named_pos_values = NULL;
 	parser = NULL;
 	pchar = NULL;
 	rock = NULL;
@@ -59,7 +57,7 @@ LevelSceneNode::~LevelSceneNode() {
 	delete [] checkpointPositions;
 }
 
-void LevelSceneNode::createLabel(vector2 position, char* text) {
+void LevelSceneNode::createLabel(vector2 position, const std::string& text) {
 	UILabel* label = new UILabel(gfx);
 	label->setColor(MENU_TEXT_COLOR);
 	label->setText(text, 0, 18.f);
@@ -68,16 +66,15 @@ void LevelSceneNode::createLabel(vector2 position, char* text) {
 	gfx->addSceneNode(label, objectsContainer);
 }
 
-void LevelSceneNode::parseNamedPositionString(char* string) {
-	if(parser) parser->freeMemory();
+void LevelSceneNode::parseNamedPositionString(const std::string& string) {
 	parser = new NamedPosStringParser();
 	parser->parseString(string);
 	named_pos_vars = parser->getVars();
 	named_pos_values = parser->getValues();
 }
 
-bool LevelSceneNode::loadFromFile(const char* filename, bool setActive) {
-	ifstream fin(filename, ios::binary);
+bool LevelSceneNode::loadFromFile(const std::string& filename, bool setActive) {
+	ifstream fin(filename.c_str(), ios::binary);
 	if(!fin) return false;
 	BinaryLevel level;
 	fin.read((char*)(&level), sizeof(level));
@@ -97,8 +94,8 @@ bool LevelSceneNode::loadFromFile(const char* filename, bool setActive) {
 	return true;
 }
 
-bool LevelSceneNode::writeToFile(const char* filename) {
-	ofstream fout(filename, ios::binary);
+bool LevelSceneNode::writeToFile(const std::string& filename) {
+	ofstream fout(filename.c_str(), ios::binary);
 	if(!fout) return false;
 	BinaryLevel level;
 	for(int x=0; x<LEVEL_SIZE_X; x++) {
@@ -360,15 +357,10 @@ void LevelSceneNode::setShowNamedPositions(bool state) {
 	showNamedPositions = state;
 }
 
-void LevelSceneNode::addNamedPosition(vector2 coords, const char* string) {
+void LevelSceneNode::addNamedPosition(vector2 coords, const std::string& string) {
 	named_positions[named_positions_n].xy[0] = coords[0];
 	named_positions[named_positions_n].xy[1] = coords[1];
-	int string_len = strlen(string);
-	named_positions[named_positions_n].string_len = string_len;
-	for(int x=0; x<string_len; x++) {
-		named_positions[named_positions_n].string[x] = string[x];
-	}
-	named_positions[named_positions_n].string[string_len] = 0;
+	strcpy(named_positions[named_positions_n].string, string.c_str());
 	named_positions_n++;
 	populateObjects();
 }
@@ -376,7 +368,7 @@ void LevelSceneNode::addNamedPosition(vector2 coords, const char* string) {
 void LevelSceneNode::delNamedPosition(int index) {
 	if(index < 0 || index > named_positions_n-1) return;
 
-	if(!strcmp(getNamedPosValue(index, "OBJ"), "HERO")) {
+	if(getNamedPosValue(index, "OBJ") == "HERO") {
 		pchar = NULL;
 	}
 
@@ -400,28 +392,23 @@ int LevelSceneNode::getNamedPositionsN() {
 	return named_positions_n;
 }
 
-char* LevelSceneNode::getNamedPosString(int index) {
+std::string LevelSceneNode::getNamedPosString(int index) {
 	if(index >= named_positions_n || index < 0) return NULL;
 	return named_positions[index].string;
 }
 
-char* LevelSceneNode::getNamedPosValue(int index, const char* var_n) {
+std::string LevelSceneNode::getNamedPosValue(int index, const std::string& var_n) {
 	if(index >= named_positions_n || index < 0) return NULL;
 	parseNamedPositionString(named_positions[index].string);
 
-	char* returnString = new char[NAMED_POSITION_LEN];
-	char* var, *value;
-
-	for(list<char*>::iterator varit = named_pos_vars->begin(), valueit = named_pos_values->begin(); varit != named_pos_vars->end(); varit++, valueit++) {
-		var = *varit;
-		value = *valueit;
-		if(strcmp(var, var_n) == 0) {
-			for(int x=0; x<strlen(value); x++) returnString[x] = value[x];
-			returnString[strlen(value)] = 0;
-			return returnString;
+	for(list<std::string>::iterator varit = named_pos_vars.begin(), valueit = named_pos_values.begin(); varit != named_pos_vars.end(); varit++, valueit++) {
+		std::string var = *varit;
+		std::string value = *valueit;
+		if(var == var_n) {
+			return value;
 		}
 	}
-	return NULL;
+	return "";
 }
 
 vector2 LevelSceneNode::getNamedPosPosition(int index) {
@@ -429,18 +416,17 @@ vector2 LevelSceneNode::getNamedPosPosition(int index) {
 	return vector2(named_positions[index].xy[0], named_positions[index].xy[1]);
 }
 
-SceneNode* LevelSceneNode::getObjectByName(char* name) {
-	if(!name) return NULL;
+SceneNode* LevelSceneNode::getObjectByName(const std::string& name) {
+	if(name == "") return NULL;
 	if(!objectsContainer) return NULL;
 
 	list<SceneNode*>* nodes = objectsContainer->getChildren();
 
 	for(list<SceneNode*>::iterator x = nodes->begin(); x != nodes->end(); x++) {
-		if((*x)->getName() != NULL)
 #ifdef _WIN32
-		if(stricmp((*x)->getName(), name) == 0) {
+		if(stricmp((*x)->getName().c_str(), name.c_str()) == 0) {
 #else
-		if(strcasecmp((*x)->getName(), name) == 0) {
+		if(strcasecmp((*x)->getName().c_str(), name.c_str()) == 0) {
 #endif
 			return *x;
 		}
@@ -542,14 +528,11 @@ void LevelSceneNode::populateObjects(bool setActive) {
 	rock = NULL;
 
 	for(int x=0; x<named_positions_n; x++) {
-		char* buffer = new char[NAMED_POSITION_LEN];
-		for(int i=0; i<named_positions[x].string_len; i++) buffer[i] = named_positions[x].string[i];
-		buffer[named_positions[x].string_len] = 0;
-
+		std::string buffer = named_positions[x].string;
 		parseNamedPositionString(buffer);
 
 		// VAR : VALUE pairs
-		char* name = new char[MAX_TEXT_BUFFER];
+		std::string name;
 		float interval; // floating point interval in seconds
 		float destination_x = 0.f; // vector2 position
 		float destination_y = 0.f;
@@ -557,9 +540,9 @@ void LevelSceneNode::populateObjects(bool setActive) {
 		float firingSpeed = 0.f;
 		float projectileSpeed = 0.f;
 		bool state = false;
-		char* target = new char[MAX_TEXT_BUFFER];
-		char* objName = new char[MAX_TEXT_BUFFER];
-		char* text = new char[MAX_TEXT_BUFFER];
+		std::string target;
+		std::string objName;
+		std::string text;
 		float size = 0.f;
 		int switch_times = 0;
 		float type = 0.f;
@@ -567,62 +550,58 @@ void LevelSceneNode::populateObjects(bool setActive) {
 		int id = 0;
 		//
 
-		char* var;
-		char* value;
+		std::string var;
+		std::string value;
 
-		for(list<char*>::iterator varit = named_pos_vars->begin(), valueit = named_pos_values->begin(); varit != named_pos_vars->end(); varit++, valueit++) {
+		for(list<std::string>::iterator varit = named_pos_vars.begin(), valueit = named_pos_values.begin(); varit != named_pos_vars.end(); varit++, valueit++) {
 			var = *varit;
 			value = *valueit;
-			if(strcmp(var, "OBJ") == 0) {
-				for(int pp=0; pp<strlen(value); pp++) name[pp] = value[pp];
-				name[strlen(value)] = 0;
-			} else if(strcmp(var, "INTERVAL") == 0) {
-				interval = atof(value);
-			} else if(strcmp(var, "DESTX") == 0) {
-				destination_x = atof(value);
-			} else if(strcmp(var, "DESTY") == 0) {
-				destination_y = atof(value);
-			} else if(strcmp(var, "FIRINGSPEED") == 0) {
-				firingSpeed = atof(value);
-			} else if(strcmp(var, "MOVESPEED") == 0) {
-				moveSpeed = atof(value);
-			} else if(strcmp(var, "PROJECTILESPEED") == 0) {
-				projectileSpeed = atof(value);
-			} else if(strcmp(var, "STATE") == 0) {
-				state = atof(value);
-			} else if(strcmp(var, "NAME") == 0) {
-				for(int x=0; x<strlen(value); x++) objName[x] = value[x];
-				objName[strlen(value)] = 0;
-			} else if(strcmp(var, "TARGET") == 0) {
-				for(int x=0; x<strlen(value); x++) target[x] = value[x];
-				target[strlen(value)] = 0;
-			} else if(strcmp(var, "SWITCHTIMES") == 0) {
-				switch_times = atoi(value);
-			} else if(strcmp(var, "TYPE") == 0) {
-				type = atof(value);
-			} else if(strcmp(var, "SIZE") == 0) {
-				size = atof(value);
-			} else if(strcmp(var, "TEXT") == 0) {
-				for(int x=0; x<strlen(value); x++) text[x] = value[x];
-				text[strlen(value)] = 0;
-			} else if(strcmp(var, "FORCE") == 0) {
-				force = atof(value);
-			} else if(strcmp(var, "ID") == 0) {
-				id = atoi(value);
+			if(var == "OBJ") {
+				name = value;
+			} else if(var == "INTERVAL") {
+				interval = atof(value.c_str());
+			} else if(var == "DESTX") {
+				destination_x = atof(value.c_str());
+			} else if(var == "DESTY") {
+				destination_y = atof(value.c_str());
+			} else if(var == "FIRINGSPEED") {
+				firingSpeed = atof(value.c_str());
+			} else if(var == "MOVESPEED") {
+				moveSpeed = atof(value.c_str());
+			} else if(var == "PROJECTILESPEED") {
+				projectileSpeed = atof(value.c_str());
+			} else if(var == "STATE") {
+				state = atof(value.c_str());
+			} else if(var == "NAME") {
+				objName = value;
+			} else if(var == "TARGET") {
+				target = value;
+			} else if(var == "SWITCHTIMES") {
+				switch_times = atoi(value.c_str());
+			} else if(var == "TYPE") {
+				type = atof(value.c_str());
+			} else if(var == "SIZE") {
+				size = atof(value.c_str());
+			} else if(var == "TEXT") {
+				text = value;
+			} else if(var == "FORCE") {
+				force = atof(value.c_str());
+			} else if(var == "ID") {
+				id = atoi(value.c_str());
 			}
 		}
 
 		vector2 destination(destination_x, destination_y);
 		vector2 position(named_positions[x].xy[0], named_positions[x].xy[1]);
 
-		if(!strcmp(name, "CRATE")) {
+		if(name == "CRATE") {
 			Ragdoll* ragdoll = new Ragdoll(gfx);
 			ragdoll->init(position, "CRATE");
 			ragdoll->setActive(true);
 			ragdoll->setName(objName);
 			gfx->addSceneNode(ragdoll, objectsContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "HERO")) {
+		} else if(name == "HERO") {
 			if(!pchar) {
 				pchar = new PlayableCharacter(gfx);
 				pchar->init(position);
@@ -633,14 +612,14 @@ void LevelSceneNode::populateObjects(bool setActive) {
 				gfx->addSceneNode(pchar, objectsContainer);
 				if(showNames) createLabel(position, objName);
 			}
-		} else if(!strcmp(name, "WALLLASER")) {
+		} else if(name == "WALLLASER") {
 			WallLaser* laser = new WallLaser(gfx);
 			laser->setName(objName);
 			laser->init(position, type, interval);
 			laser->setActive(true);
 			gfx->addSceneNode(laser, objectsContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "ROBOTGUARD")) {
+		} else if(name == "ROBOTGUARD") {
 			RobotGuard* robot = new RobotGuard(gfx);
 			robot->init(position);
 			robot->setName(objName);
@@ -649,7 +628,7 @@ void LevelSceneNode::populateObjects(bool setActive) {
 			robot->setActive(true);
 			gfx->addSceneNode(robot, objectsContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "SWITCH")) {
+		} else if(name == "SWITCH") {
 			SceneNode* tg = getObjectByName(target);
 			Switch* swtch = new Switch(gfx);
 			swtch->setName(objName);
@@ -657,21 +636,21 @@ void LevelSceneNode::populateObjects(bool setActive) {
 			swtch->setActive(true);
 			gfx->addSceneNode(swtch, backgroundContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "MINE")) {
+		} else if(name == "MINE") {
 			Mine* mine = new Mine(gfx);
 			mine->setName(objName);
 			mine->init(position);
 			mine->setActive(true);
 			gfx->addSceneNode(mine, objectsContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "EXIT")) {
+		} else if(name == "EXIT") {
 			LevelExit* levelexit = new LevelExit(gfx);
 			levelexit->setName(objName);
 			levelexit->init(position);
 			levelexit->setActive(true);
 			gfx->addSceneNode(levelexit, backgroundContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "TEXT")) {
+		} else if(name == "TEXT") {
 			UILabel* label = new UILabel(gfx);
 			if(!setActive) label->setColor(color(0.f, 0.f, 0.f, 1.f));
 			else label->setColor(LEVEL_TEXT_COLOR);
@@ -681,7 +660,7 @@ void LevelSceneNode::populateObjects(bool setActive) {
 			label->setPosition(vector2((tile_x-1)*PPT_X, tile_y*PPT_Y+PPT_Y/2.f));
 			label->setActive(true);
 			gfx->addSceneNode(label, backgroundContainer);
-		} else if(!strcmp(name, "PRESSUREPAD")) {
+		} else if(name == "PRESSUREPAD") {
 			SceneNode* tg = getObjectByName(target);
 			PressurePad* pad = new PressurePad(gfx);
 			pad->setName(objName);
@@ -689,14 +668,14 @@ void LevelSceneNode::populateObjects(bool setActive) {
 			pad->setActive(true);
 			gfx->addSceneNode(pad, backgroundContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "GRAVITYLIFT")) {
+		} else if(name == "GRAVITYLIFT") {
 			GravityLift* lift = new GravityLift(gfx);
 			lift->setName(objName);
 			lift->init(position, force);
 			lift->setActive(true);
 			gfx->addSceneNode(lift, backgroundContainer);
 			if(showNames) createLabel(position, objName);
-		} else if(!strcmp(name, "ROCK")) {
+		} else if(name == "ROCK") {
 			if(!rock) {
 				rock = new TheRock(gfx);
 				rock->setName(objName);
@@ -705,14 +684,13 @@ void LevelSceneNode::populateObjects(bool setActive) {
 				gfx->addSceneNode(rock, objectsContainer);
 				if(showNames) createLabel(position, objName);
 			}
-		} else if(!strcmp(name, "CHECKPOINT")) {
+		} else if(name == "CHECKPOINT") {
 			Checkpoint* cp = new Checkpoint(gfx);
 			cp->init(position, id);
 			cp->setActive(true);
 			gfx->addSceneNode(cp, backgroundContainer);
 			if(showNames) createLabel(position, objName);
 		}
-		delete buffer;
 	}
 }
 
@@ -880,8 +858,8 @@ void LevelSceneNode::populate_rand() {
 				map[x][y] = 0;
 }
 
-void LevelSceneNode::exportLevelInfo(char* filename_n) {
-	ofstream fout(filename_n, ios::binary);
+void LevelSceneNode::exportLevelInfo(const std::string& filename_n) {
+	ofstream fout(filename_n.c_str(), ios::binary);
 	if(!fout) return;
 
 	// level size

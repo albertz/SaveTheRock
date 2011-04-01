@@ -134,7 +134,7 @@ class SceneNode {
 	std::list<SceneNode*>* children;
 	
 	public:
-	char* name;
+	std::string name;
 		
 	bool _isActive;
 	bool _isSleeping;
@@ -151,8 +151,8 @@ class SceneNode {
 	SceneNode();
 	virtual ~SceneNode();
 	
-	void setName(const char* newName);
-	char* getName();
+	void setName(const std::string& newName);
+	std::string getName();
 
 	void setActive(bool state);
 	bool isActive();
@@ -216,16 +216,16 @@ class TexMgr {
 	int* textures_frames_n;
 	vector2* textures_sizes;
 	vector2* textures_real_sizes;
-	char** textures_names;
+	std::string* textures_names;
 	int textures_n;
 	
 	public:
 	/* TexMgr provides a high-level interface for loading textures */
 	TexMgr(GfxMgr* gfx_n);
 	void init();
-	void addTexture(const char* name, const char* filepath);
+	void addTexture(const std::string& name, const std::string& filepath);
 	
-	int getId(const char* name);
+	int getId(const std::string& name);
 	unsigned int* getTexture(int id);
 	vector2 getSize(int id);
 	vector2 getTexSize(int id);
@@ -279,7 +279,7 @@ class GfxMgr {
 	void recomputeBackground();
 	void frameStart();
 	void frameEnd();
-	void setWindowTitle(char* title);
+	void setWindowTitle(std::string title);
 	void updateScene(float frameDelta);
 	void addSceneNode(SceneNode* node, SceneNode* parent=NULL);
 	void deleteSceneNode(SceneNode* node);

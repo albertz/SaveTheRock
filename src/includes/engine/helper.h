@@ -7,22 +7,20 @@
 #define __HELPER_H
 
 class NamedPosStringParser {
-	char* string;
-	int len;
+	std::string string;
 	
-	std::list<char*>* fields;
-	std::list<char*>* vars;
-	std::list<char*>* values;
+	std::list<std::string> fields;
+	std::list<std::string> vars;
+	std::list<std::string> values;
 	
 	void __parseFields();
 	void __parseVarValuePairs();
 	
 	public:
 	NamedPosStringParser();
-	void parseString(char* string_n);
-	std::list<char*>* getVars();
-	std::list<char*>* getValues();
-	void freeMemory();
+	void parseString(const std::string& string_n);
+	std::list<std::string> getVars();
+	std::list<std::string> getValues();
 };
 
 class bitmap2 {
@@ -73,20 +71,20 @@ class BMP_Loader {
 		
 		std::ifstream currentFile;
 		bool isOpened;
-		char* currentBuffer; // BMP data buffer
-		char* tmpData;
+		std::string currentBuffer; // BMP data buffer
+		std::string tmpData;
 		BMP_Loader();
 		// constructor
-		bool openFile(char* filename);
+		bool openFile(const std::string& filename);
 		// opens filename for binary reading
 		void readFileToBuffer(int* size_x, int* size_y, unsigned int* datalen, bool* error);
 		// reads file data and returns a pointer to it, fills in size_x and size_y with the bitmap's width and height
 		// if error is 1 after a call, then the file was not read (most probably wasn't a BMP)
 		// and the buffer might be null or point to incomplete data
 		// strongly advise checking error value after reading a file
-		void writeBufferToFile(char* filename);
+		void writeBufferToFile(const std::string& filename);
 		// writes buffer data to a file
-		char* getBuffer();
+		std::string getBuffer();
 		// returns a pointer to the current buffer
 		void closeFile();
 		// closes the opened file and frees allocated memory

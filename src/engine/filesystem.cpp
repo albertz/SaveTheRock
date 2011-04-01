@@ -37,7 +37,7 @@ std::list<std::string> Filesystem::getCustomLevels() {
 			if(strcmp(fd.cFileName, "..")) {
 				if(strcmp(fd.cFileName, "special") != 0) {
 					int len = strlen(fd.cFileName);
-					char* levelname = new char[len+1];
+					std::string levelname = new char[len+1];
 					for(int x=0; x<len; x++) levelname[x] = fd.cFileName[x];
 					levelname[len-4] = 0;
 					custom_levels.push_back(levelname);
@@ -76,7 +76,7 @@ std::list<std::string> Filesystem::getMusicFiles() {
 		while(FindNextFile(hFind, &fd))	{
 			if(strcmp(fd.cFileName, "..")) {
 				int len = strlen(fd.cFileName);
-				char* musicname = new char[len+1];
+				std::string musicname = new char[len+1];
 				for(int x=0; x<len; x++) musicname[x] = fd.cFileName[x];
 				musicname[len] = 0;
 				music_names.push_back(musicname);

@@ -35,8 +35,7 @@ class UIWidget : public SceneNode {
 };
 
 class UILabel : public UIWidget {
-	char* text;
-	int text_len;
+	std::string text;
 	bool text_font;
 	float text_size;
 	vector2 position;
@@ -48,7 +47,7 @@ class UILabel : public UIWidget {
 	UILabel(GfxMgr* gfx_n);
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
-	void setText(const char* text_n, bool font_n, float size_n, bool level_label_n=false);
+	void setText(const std::string& text_n, bool font_n, float size_n, bool level_label_n=false);
 	aabb2 getBoundingBox();
 };
 
@@ -62,7 +61,7 @@ class UIImage : public UIWidget {
 	public:
 	UIImage(GfxMgr* gfx_n);
 	void update(float frameDelta);
-	void setImage(const char* texture_name);
+	void setImage(const std::string& texture_name);
 	void setPosition(vector2 position_n);
 	vector2 getSize();
 };
@@ -91,7 +90,7 @@ class UIInfoBox : public UIWidget {
 		void setPosition(vector2 position_n);
 		void setText(float margin_n, float text_size_n, bool font_n);
 		void setTimeout(float seconds);
-		void addText(const char* text, bool isGray=false);
+		void addText(const std::string& text, bool isGray=false);
 		void addBreak();
 		void receiveKeyEvent(std::list<KeyEvent> events);
 		void fadeIn();
@@ -104,13 +103,12 @@ class UIInfoBox : public UIWidget {
 class UIInputBox : public UIWidget {
 	UILabel* label;
 	UILabel* text;
-	char* input;
-	int input_len;
+	std::string input;
 	
 	bool alphanumeric;
 	color clr2;
 	
-	char* returnString;
+	std::string returnString;
 	int returnState;
 	
 	vector2 position;
@@ -131,10 +129,10 @@ class UIInputBox : public UIWidget {
 	void setActive(bool state);
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
-	void setInputBox(const char* label_text, bool alphanumeric_n=true);
-	void setText(const char* text_n);
+	void setInputBox(const std::string& label_text, bool alphanumeric_n=true);
+	void setText(const std::string& text_n);
 	int pollStatus();
-	char* getReturnString();
+	std::string getReturnString();
 	void resetStatus();
 	void receiveKeyEvent(std::list<KeyEvent> events);
 	void fadeIn();
@@ -169,7 +167,7 @@ class UIMenu : public UIWidget {
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
 	void setMenu(float margin_n, float text_size_n, bool font_n, bool mouseControl_n=true);
-	void addMenuOption(const char* text, bool isSelected=false);
+	void addMenuOption(const std::string& text, bool isSelected=false);
 	void addMenuBreak();
 	int pollStatus();
 	void resetStatus();

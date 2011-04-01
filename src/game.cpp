@@ -40,7 +40,7 @@ void GameEventHandler::update(float frameDelta) {
 					sprintf(text, "Time - %.3f seconds\nLevel complete!", gfx->getLevel()->getTime());
 					vector2 wparams = gfx->getRenderer()->getWindowParams();
 					game->showInfoBox(text, INFOBOX_DEFAULT_TIMEOUT+2.f, 24.f, wparams*0.5f-vector2(50.f, 50.f));
-					delete text;
+					delete[] text;
 					gfx->reinitLevel();
 					game->changeState(STATE_MAIN_MENU);
 				}
@@ -50,7 +50,7 @@ void GameEventHandler::update(float frameDelta) {
 					sprintf(text, "Time - %.3f seconds\nLevel complete!", gfx->getLevel()->getTime());
 					vector2 wparams = gfx->getRenderer()->getWindowParams();
 					game->showInfoBox(text, INFOBOX_DEFAULT_TIMEOUT+2.f, 24.f, wparams*0.5f-vector2(50.f, 50.f));
-					delete text;
+					delete[] text;
 					gfx->reinitLevel();
 					game->changeState(STATE_MAIN_MENU);
 				}
@@ -94,7 +94,6 @@ void GameEventHandler::receiveKeyEvent(list<KeyEvent> events) {
 // game class methods
 Game::Game() {
 	isRunning = true;
-	level_filename = NULL;
 	gameLogo = NULL;
 	mainMenu = NULL;
 	loadCustomMenu = NULL;
@@ -109,7 +108,6 @@ Game::Game() {
 	video_mode_start = 0;
 	title = NULL;
 	editor = NULL;
-	level_filename = NULL;
 	db = NULL;
 	firstRun = false;
 	settingsMenuPolled = false;
@@ -126,7 +124,7 @@ void Game::saveDatabase() {
 	fout.write((char*)(db), sizeof(DatabaseFile));
 }
 
-void Game::showInfoBox(const char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
+void Game::showInfoBox(const std::string& text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
 	if(infobox) gfx->deleteSceneNode(infobox);
 	
 	if(!delimiter)
@@ -138,22 +136,20 @@ void Game::showInfoBox(const char* text, float timeOut, float textSize, vector2 
 	infobox->setTimeout(timeOut);
 	infobox->setText(margin, textSize, 0);
 
-	char* buffer = new char[1024];
-	for(int x=0; x<strlen(text); x++) buffer[x] = text[x];
-	buffer[strlen(text)] = 0;
-	char* line;
-	line = strtok(buffer, delimiter);
+	char* buffer = new char[text.size() + 1];
+	strcpy(buffer, text.c_str());
+	char* line = strtok(buffer, delimiter);
 	while(line != NULL) {
 		infobox->addText(line);
 		line = strtok(NULL, delimiter);
 	}
-
+	delete[] buffer;
+	
 	vector2 wparams = gfx->getRenderer()->getWindowParams();
 
 	infobox->setPosition(position);
 	gfx->getUI()->addWidget(infobox);
 	infobox->fadeIn();
-	delete buffer;
 }
 
 void Game::hideInfoBox() {
@@ -244,7 +240,6 @@ void Game::openChangeResMenu() {
 		video_modes_n = glfwGetVideoModes(video_modes, MAX_VIDEO_MODES);
 		vector2 wparams = gfx->getRenderer()->getWindowParams();
 		video_mode_start = 0;
-		char* str;
 		int y;
 		for(y=0; y<video_modes_n; y++) {
 			if(video_modes[y].Width > 800 && video_modes[y].Height > 600) break;
@@ -253,7 +248,7 @@ void Game::openChangeResMenu() {
 		y = 0;
 		for(int x=video_mode_start; x<video_modes_n; x++) {
 			if(y > MAX_DISPLAYED_VIDEO_MODES) break;
-			str = new char[64];
+			char* str = new char[64];
 			bool selected = (video_modes[x].Width == (int)wparams[0] && video_modes[x].Height == (int)wparams[1]);
 			sprintf(str, "%ix%i", video_modes[x].Width, video_modes[x].Height);
 			changeResMenu->addMenuOption(str, selected);
@@ -437,7 +432,7 @@ void Game::pollLoadCustomMenu() {
 		std::list<std::string> levels = gfx->getFilesystem()->getCustomLevels();
 		for(list<std::string>::iterator x = levels.begin(); x != levels.end(); x++) {
 			if(i == status-1) {
-				char* filename = new char[x->size()];
+				std::string filename = new char[x->size()];
 				for(int p=0; p<x->size(); p++) filename[p] = (*x)[p];
 				filename[x->size()] = 0;
 				level_filename = filename;
@@ -453,7 +448,7 @@ void Game::pollSettingsMenu() {
 	int status;
 	if(settingsMenu) status = settingsMenu->pollStatus();
 	else status = 0;
-	char* filename;
+	std::string filename;
 
 	if(status == -1) {
 		gfx->deleteSceneNode(settingsMenu);
@@ -667,7 +662,7 @@ void Game::enterTutorialState() {
 	gfx->setCursor(false);
 	gfx->recomputeBackground();
 	gfx->reinitLevel();
-	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename("tutorial", true).c_str(), true);
+	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename("tutorial", true), true);
 	gfx->getLevel()->setActive(true);
 	gfx->getCamera()->setKeyboardControl(false);
 	gfx->getPhysMgr()->startSimulation();

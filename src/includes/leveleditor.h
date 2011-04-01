@@ -29,7 +29,7 @@ class LevelEditor : public SceneNode {
 	LEVEL_EDITOR_STATE state;
 	BRUSH currentBrush;
 
-	char* filename; // current opened level filename
+	std::string filename; // current opened level filename
 	
 	bool settingDestination;
 	bool settingName;
@@ -45,8 +45,8 @@ class LevelEditor : public SceneNode {
 	bool deletingNamedPos;*/
 	
 	GAME_OBJECT_TYPE namedPosType;
-	char* namedPosName;
-	char* namedPosString;
+	std::string namedPosName;
+	std::string namedPosString;
 	int namedPos_sprite_texid;
 	Primitive* namedPos_primitive;
 	bool namedPos_wallmount;
@@ -71,12 +71,12 @@ class LevelEditor : public SceneNode {
 	
 	bool saveInputBox;
 	
-	void showLabel(const char* text);
+	void showLabel(const std::string& text);
 	void hideLabel();
 	 
-	void showInfoBox(const char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, const char* delimiter=NULL);
+	void showInfoBox(const std::string& text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, const char* delimiter=NULL);
 	void hideInfoBox();
-	void openInputBox(const char* title, const char* text=NULL, bool alphanumeric=true);
+	void openInputBox(const std::string& title, const std::string& text=NULL, bool alphanumeric=true);
 	
 	void openEditMenu(vector2 position);
 	void openLoadMenu(vector2 position);
@@ -88,16 +88,16 @@ class LevelEditor : public SceneNode {
 	void pollLoadMenu(float frameDelta);
 	void pollObjectsMenu(float frameDelta);
 	void pollInputBox(float frameDelta);
-	void pollInputBoxSaveLevel(const char* input_string);
-	void pollInputBoxAddingNamedPos(const char* input_string);
-	void pollInputBoxExportingLevelInfo(char* input_string);
+	void pollInputBoxSaveLevel(const std::string& input_string);
+	void pollInputBoxAddingNamedPos(const std::string& input_string);
+	void pollInputBoxExportingLevelInfo(std::string input_string);
 	
 	void doDrawing(float frameDelta);
 	void drawCursor(float frameDelta);
 	bool checkNamedPosCollision(vector2 displacement, bool doLevelTest=true, bool doObjectsTest=true);
 	bool checkTileCollision(vector2 displacement);
-	void startAddNamedPos(const char* name);
-	void addNamedPosVar(const char* var, const char* value);
+	void startAddNamedPos(const std::string& name);
+	void addNamedPosVar(const std::string& var, const std::string& value);
 
 	
 	public:

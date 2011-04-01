@@ -11,69 +11,54 @@ using namespace std;
 
 
 NamedPosStringParser::NamedPosStringParser() {
-	fields = NULL;
-	vars = NULL;
-	values = NULL;
 }
 
 void NamedPosStringParser::__parseFields() {
-	char* field = strtok(string, "_");
+	char* buffer = new char[string.size() + 1];
+	strcpy(buffer, string.c_str());
+	char* field = strtok(buffer, "_");
 	while(field != NULL) {
-		char* tmp = new char[NAMED_POSITION_LEN];
-		for(int x=0; x<strlen(field); x++) tmp[x] = field[x];
-		tmp[strlen(field)] = 0;
-		fields->push_back(tmp);
+		fields.push_back(field);
 		field = strtok(NULL, "_");
-	}	
+	}
+	delete[] buffer;
 }
 
 void NamedPosStringParser::__parseVarValuePairs() {
-	for(list<char*>::iterator x = fields->begin(); x != fields->end(); x++){
-		char* var = new char[NAMED_POSITION_LEN];
-		char* value = new char[NAMED_POSITION_LEN];
-		
-		char* tmp = strtok(*x, "=");
-		for(int p=0; p<strlen(tmp); p++) var[p] = tmp[p];
-		var[strlen(tmp)] = 0;
-		tmp = strtok(NULL, "=");
-		for(int p=0; p<strlen(tmp); p++) value[p] = tmp[p];
-		value[strlen(tmp)] = 0;
-		vars->push_back(var);
-		values->push_back(value);
+	for(list<std::string>::iterator x = fields.begin(); x != fields.end(); x++) {
+		char* buffer = new char[x->size() + 1];
+		strcpy(buffer, x->c_str());
+		char* var = strtok(buffer, "=");
+		char* value = strtok(NULL, "=");
+		if(var && value) {
+			vars.push_back(var);
+			values.push_back(value);
+		}
+		else
+			cout << "NamedPosStringParser::__parseVarValuePairs: bad field '" << *x << "' in string '" << string << "'" << endl;
+		delete[] buffer;
 	}	
 }
 
-void NamedPosStringParser::parseString(char* string_n) {
-	fields = new list<char*>;
-	vars = new list<char*>;
-	values = new list<char*>;
+void NamedPosStringParser::parseString(const std::string& string_n) {
+	fields.clear();
+	vars.clear();
+	values.clear();
 	
-	len = strlen(string_n);
-	string = new char[len+1];
-	for(int x=0; x<len; x++) string[x] = string_n[x];
-	string[len] = 0;
+	string = string_n;
 	
 	__parseFields();
 	__parseVarValuePairs();
 }
 
-list<char*>* NamedPosStringParser::getVars() {
+list<std::string> NamedPosStringParser::getVars() {
 	return vars;	
 }
 
-list<char*>* NamedPosStringParser::getValues() {
+list<std::string> NamedPosStringParser::getValues() {
 	return values;	
 }
 
-void NamedPosStringParser::freeMemory() {
-	fields->clear();
-	vars->clear();
-	values->clear();
-	delete fields, vars, values;
-	fields = NULL;
-	vars = NULL;
-	values = NULL;
-}
 
 // bitmap2 class methods
 
@@ -118,12 +103,11 @@ void bitmap2::setLevelArray(unsigned int newArray[LEVEL_SIZE_X/BITS_IN_INT][LEVE
 
 BMP_Loader::BMP_Loader() {
 	isOpened = false;
-	currentBuffer = NULL;		
 }
 
-bool BMP_Loader::openFile(char* filename) {
+bool BMP_Loader::openFile(const std::string& filename) {
 	if(isOpened) closeFile();
-	currentFile.open(filename, ios::binary);
+	currentFile.open(filename.c_str(), ios::binary);
 	if(currentFile.is_open()) {
 		isOpened = true;
 		return true;
@@ -143,27 +127,27 @@ void BMP_Loader::readFileToBuffer(int* size_x, int* size_y, unsigned int* datale
 		currentFile.read((char*)(&header), sizeof(header));
 		currentFile.read((char*)(&info), sizeof(info));
 		*size_x = info.width; *size_y = info.height; *datalen = info.datasize;
-		currentBuffer = new char[info.datasize];
+		currentBuffer = std::string(info.datasize, '\0');
 		currentFile.seekg(header.bmp_offset);
-		currentFile.read(currentBuffer, info.datasize);
+		currentFile.read(&currentBuffer[0], info.datasize);
 	} else *error = true;	
 }
 
-void BMP_Loader::writeBufferToFile(char* filename) {
-	ofstream output_file(filename, ios::binary);
+void BMP_Loader::writeBufferToFile(const std::string& filename) {
+	ofstream output_file(filename.c_str(), ios::binary);
 	output_file.write((char*)(&magic_bits), sizeof(magic_bits));
 	output_file.write((char*)(&header), sizeof(header));
 	output_file.write((char*)(&info), sizeof(info));
-	output_file.write(currentBuffer, info.datasize);
+	output_file.write(&currentBuffer[0], info.datasize);
 }
 
-char* BMP_Loader::getBuffer() {
+std::string BMP_Loader::getBuffer() {
 	return currentBuffer;	
 }
 
 void BMP_Loader::closeFile() {
 	if(isOpened) {
-		delete [] currentBuffer;
+		currentBuffer = "";
 		currentFile.close();
 		isOpened = false;
 	}

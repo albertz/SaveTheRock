@@ -19,7 +19,6 @@ class TheRock;
 
 struct NamedPosition {
 	char string[NAMED_POSITION_LEN];
-	int string_len;
 	float xy[2];
 };
 
@@ -57,8 +56,8 @@ class LevelSceneNode : public SceneNode {
 	
 	Primitive* buildQuadPhysics(float ax, float ay, float bx, float by, float cx, float cy, float dx, float dy);
 	Primitive* buildTrianglePhysics(float ax, float ay, float bx, float by, float cx, float cy);
-	void createLabel(vector2 position, char* text);
-	void parseNamedPositionString(char* string);
+	void createLabel(vector2 position, const std::string& text);
+	void parseNamedPositionString(const std::string& string);
 	
 	public:
 		float* render_vertex_list;
@@ -66,27 +65,27 @@ class LevelSceneNode : public SceneNode {
 		unsigned char map[LEVEL_SIZE_X][LEVEL_SIZE_Y];
 		NamedPosition* named_positions;
 		unsigned int named_positions_n;
-		std::list<char*>* named_pos_vars;
-		std::list<char*>* named_pos_values;
+		std::list<std::string> named_pos_vars;
+		std::list<std::string> named_pos_values;
 		
 		LevelSceneNode(GfxMgr* gfx);
 		~LevelSceneNode();
 		void populateWorld();
-		bool loadFromFile(const char* filename, bool setActive=false);
-		bool writeToFile(const char* filename);
+		bool loadFromFile(const std::string& filename, bool setActive=false);
+		bool writeToFile(const std::string& filename);
 		void update(float frameDelta);
 		void redraw();
 		bool drawSelf();
 		std::list<Primitive*> getGeometry(aabb2 bounds);
 		void setShowNames(bool state);
 		void setShowNamedPositions(bool state);
-		void addNamedPosition(vector2 coords, const char* string);
+		void addNamedPosition(vector2 coords, const std::string& string);
 		void delNamedPosition(int index);
 		int getNamedPositionsN();
-		char* getNamedPosString(int index);
-		char* getNamedPosValue(int index, const char* var_n);
+		std::string getNamedPosString(int index);
+		std::string getNamedPosValue(int index, const std::string& var_n);
 		vector2 getNamedPosPosition(int index);
-		SceneNode* getObjectByName(char* name);
+		SceneNode* getObjectByName(const std::string& name);
 		int checkNamedPosArea(aabb2 bb);
 		int checkNamedPosTile(int tile_x, int tile_y);
 		int findNamedPosition(vector2 coords);
@@ -115,7 +114,7 @@ class LevelSceneNode : public SceneNode {
 		
 		bool receiveCollisionEvent(CollisionEvent event);
 		void populate_rand();
-		void exportLevelInfo(char* filename);
+		void exportLevelInfo(const std::string& filename);
 };
 
 #endif

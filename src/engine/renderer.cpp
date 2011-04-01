@@ -85,8 +85,8 @@ renderer::renderer(int width, int height, bool fs, bool vsync, int fsaa) {
 	loadFontTexture();
 }
 
-void renderer::setWindowTitle(char* title) {
-	glfwSetWindowTitle(title);	
+void renderer::setWindowTitle(const std::string& title) {
+	glfwSetWindowTitle(title.c_str());	
 }
 
 void renderer::frameStart(vector2 bg_displacement, aabb2 view_bb) {
@@ -260,8 +260,8 @@ void renderer::drawBackground(vector2 displacement, aabb2 view_bb) {
 	glPopMatrix();
 }
 
-void renderer::drawText(char* string, int len, bool font, float size, color clr, vector2 position_orig) {
-	assert(string != NULL && size > 0.f);	
+void renderer::drawText(const std::string& string, int len, bool font, float size, color clr, vector2 position_orig) {
+	assert(size > 0.f);	
 	
 	vector2 position = position_orig;
 	
@@ -750,8 +750,8 @@ void renderer::redrawLevel() {
 }
 
 
-unsigned int* renderer::loadTexturesFromFile(const char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret) {
-	ifstream animFile(filename, ios::binary);
+unsigned int* renderer::loadTexturesFromFile(const std::string& filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret) {
+	ifstream animFile(filename.c_str(), ios::binary);
 	assert(animFile.is_open());
 	RGB_RAW_ANIMATION_FILE fileAttr;
 	animFile.read((char*)(&fileAttr), sizeof(fileAttr));
@@ -766,7 +766,7 @@ unsigned int* renderer::loadTexturesFromFile(const char* filename, int* frames_r
 		animFile.read(buffer, int(size[0]*size[1]*3));
 		tmp_textures[x] = loadTextureRGB(buffer, size);	
 	}
-	delete buffer;
+	delete[] buffer;
 	return tmp_textures;
 }
 

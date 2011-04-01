@@ -14,7 +14,6 @@ using namespace std;
 LevelEditor::LevelEditor(GfxMgr* gfx_n) {
 	type = SN_TYPE_LEDITOR;
 	gfx = gfx_n;
-	filename = NULL;
 	currentBrush = BRUSH_NONE;	
 	showSlanted = true;
 	showingSlanted = true;
@@ -26,7 +25,6 @@ LevelEditor::LevelEditor(GfxMgr* gfx_n) {
 	/*addingNamedPos = false;
 	deletingNamedPos = false;*/
 	namedPosType = GO_TYPE_NONE;
-	namedPosString = NULL;
 	namedPos_sprite_texid = -1;
 	namedPos_primitive = NULL;
 	namedPos_wallmount = false;
@@ -56,7 +54,7 @@ LevelEditor::~LevelEditor() {
 	gfx->getInputHandler()->deleteReceiver(this);	
 }
 
-void LevelEditor::showLabel(const char* text) {
+void LevelEditor::showLabel(const std::string& text) {
 	if(label) gfx->deleteSceneNode(label);
 	label = new UILabel(gfx);
 	label->setColor(MENU_TEXT_COLOR);
@@ -75,7 +73,7 @@ void LevelEditor::hideLabel() {
 	}
 }
 
-void LevelEditor::showInfoBox(const char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
+void LevelEditor::showInfoBox(const std::string& text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
 	if(infobox) gfx->deleteSceneNode(infobox);
 
 	if(!delimiter)
@@ -87,15 +85,14 @@ void LevelEditor::showInfoBox(const char* text, float timeOut, float textSize, v
 	infobox->setTimeout(timeOut);
 	infobox->setText(margin, textSize, 0);
 	
-	char* buffer = new char[1024];
-	for(int x=0; x<strlen(text); x++) buffer[x] = text[x];
-	buffer[strlen(text)] = 0;
-	char* line;
-	line = strtok(buffer, delimiter);
+	char* buffer = new char[text.size() + 1];
+	strcpy(buffer, text.c_str());
+	char* line = strtok(buffer, delimiter);
 	while(line != NULL) {
 		infobox->addText(line);
-		line = strtok(NULL, delimiter);	
+		line = strtok(NULL, delimiter);
 	}
+	delete[] buffer;
 	
 	vector2 wparams = gfx->getRenderer()->getWindowParams();
 	
@@ -106,7 +103,6 @@ void LevelEditor::showInfoBox(const char* text, float timeOut, float textSize, v
 	else infobox->setPosition(position);
 	gfx->getUI()->addWidget(infobox);
 	infobox->fadeIn();
-	delete [] buffer;
 }
 
 void LevelEditor::hideInfoBox() {
@@ -115,13 +111,12 @@ void LevelEditor::hideInfoBox() {
 	infobox->fadeOut();	
 }
 
-void LevelEditor::openInputBox(const char* title, const char* text, bool alphanumeric) {
+void LevelEditor::openInputBox(const std::string& title, const std::string& text, bool alphanumeric) {
 	if(inputBox) delete inputBox;
 	inputBox = new UIInputBox(gfx);
 	inputBox->setPosition(vector2(100.f, 100.f));
 	inputBox->setInputBox(title, alphanumeric);
-	if(text)
-		inputBox->setText(text);
+	inputBox->setText(text);
 	inputBox->setColor(MENU_COLOR);
 	gfx->getUI()->addWidget(inputBox);
 	inputBox->fadeIn();
@@ -342,7 +337,6 @@ void LevelEditor::pollEditMenu(float frameDelta) {
 			break;
 		case 17:
 			// export level info
-			if(!filename) break;
 			gfx->getLevel()->exportLevelInfo(filename);	
 			showInfoBox("Level info exported!", INFOBOX_DEFAULT_TIMEOUT);
 			break;
@@ -364,15 +358,10 @@ void LevelEditor::pollLoadMenu(float frameDelta) {
 			std::list<std::string> levels = gfx->getFilesystem()->getCustomLevels();
 			for(list<std::string>::iterator x = levels.begin(); x != levels.end(); x++) {
 				if(i == loadMenuStatus) {
-					filename = new char[x->size()];
-					for(int p=0; p<x->size(); p++) filename[p] = (*x)[p];
-					filename[x->size()] = 0;
+					filename = *x;
 			//		gfx->getLevel()->setShowNames(true);
 					gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
-					char* buffer = new char[MAX_TEXT_BUFFER];
-					sprintf(buffer, "Loaded \"%s\"..", filename);
-					showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);
-					delete [] buffer;	
+					showInfoBox("Loaded \"" + filename + "\"..", INFOBOX_DEFAULT_TIMEOUT);
 					state = STATE_NONE;
 				}
 				i++;	
@@ -497,9 +486,8 @@ void LevelEditor::pollInputBox(float frameDelta) {
 
 	if(inputStatus != 0) {
 		if(inputStatus > 0) {
-			char* str = inputBox->getReturnString();
-			int len = strlen(str);
-			if(len != 0) {
+			std::string str = inputBox->getReturnString();
+			if(str.size() != 0) {
 				if(state == STATE_SAVING_LEVEL)
 					pollInputBoxSaveLevel(str);
 				if(state == STATE_ADDING_NAMED_POS) {
@@ -514,12 +502,12 @@ void LevelEditor::pollInputBox(float frameDelta) {
 			gfx->deleteSceneNode(inputBox);
 			inputBox = NULL;
 			
-			if(namedPosString)
-			if(namedPosType == GO_TYPE_ROBOTGUARD && !strstr(namedPosString, "PROJECTILESPEED") && strstr(namedPosString, "FIRINGSPEED")) {
+			if(namedPosString != "")
+			if(namedPosType == GO_TYPE_ROBOTGUARD && !strstr(namedPosString.c_str(), "PROJECTILESPEED") && strstr(namedPosString.c_str(), "FIRINGSPEED")) {
 				openInputBox("Enter projectile speed in pixels per frame (float)\n1 is slow\n20 is very fast\nvalues greater than 20 may present bugs on slow systems", "", false);
 			}
 			
-			if(namedPosString)
+			if(namedPosString != "")
 			if(namedPosType == GO_TYPE_WALLLASER && laserdoorswitch && settingDestination) {
 				openInputBox("Enter laser switch on interval in seconds (float)\n0 means always switched off\n-1 means always switched on", "", false);	
 				settingDestination = false;
@@ -528,7 +516,7 @@ void LevelEditor::pollInputBox(float frameDelta) {
 				settingDestination = false;
 			}
 			
-			if(namedPosString)
+			if(namedPosString != "")
 			if(namedPosType == GO_TYPE_TEXT && settingDestination) {
 				openInputBox("Please,\nenter text to be displayed", "", true);
 				settingDestination = false;
@@ -539,24 +527,16 @@ void LevelEditor::pollInputBox(float frameDelta) {
 	}
 }
 
-void LevelEditor::pollInputBoxSaveLevel(const char* input_string) {
-	int len = strlen(input_string);
-	if(filename) delete [] filename;
-	filename = new char[len+1];
-	for(int x=0; x<len; x++) filename[x] = input_string[x];
-	filename[len] = 0;
-	gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
-	char* buffer = new char[MAX_TEXT_BUFFER];
-	sprintf(buffer, "Saved \"%s\"..", filename);
-	showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);
-	delete [] buffer;
+void LevelEditor::pollInputBoxSaveLevel(const std::string& input_string) {
+	filename = input_string;
+	gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename));
+	showInfoBox("Saved \"" + filename + "\"..", INFOBOX_DEFAULT_TIMEOUT);
 }
 
-void LevelEditor::pollInputBoxAddingNamedPos(const char* input_string) {
-	int len = strlen(input_string);
+void LevelEditor::pollInputBoxAddingNamedPos(const std::string& input_string) {
 	if(namedPosType == GO_TYPE_WALLLASER) {
-		if(!strstr(namedPosString, "TYPE")) {
-			if(atof(input_string) >= 1) {
+		if(namedPosString == "TYPE") {
+			if(atof(input_string.c_str()) >= 1) {
 				addNamedPosVar("TYPE", "1");
 				laserdoorswitch = true;
 				settingDestination = true;
@@ -568,42 +548,42 @@ void LevelEditor::pollInputBoxAddingNamedPos(const char* input_string) {
 				namedPos_sprite_texid = gfx->getTexMgr()->getId("WALLDOOR");	
 			}
 		} else {
-			if(atof(input_string) >= 0)
+			if(atof(input_string.c_str()) >= 0)
 				if(laserdoorswitch)
 					addNamedPosVar("INTERVAL", input_string);
 				else addNamedPosVar("INTERVAL", "0");
 			else addNamedPosVar("INTERVAL", "-1");
 		}
 	} else if(namedPosType == GO_TYPE_ROBOTGUARD) {
-		if(!strstr(namedPosString, "MOVESPEED")) {
-			if(atof(input_string) > 0) addNamedPosVar("MOVESPEED", input_string);
+		if(!strstr(namedPosString.c_str(), "MOVESPEED")) {
+			if(atof(input_string.c_str()) > 0) addNamedPosVar("MOVESPEED", input_string);
 			else addNamedPosVar("MOVESPEED", "0");	
 			showInfoBox("left click on the movement destination!\nPlease,", INFOBOX_DEFAULT_TIMEOUT+2.f);
 			gfx->setCursor(true);	
 			settingDestination = true;	
-		} else if(!strstr(namedPosString, "FIRINGSPEED")) {
-			if(atof(input_string) > 0) addNamedPosVar("FIRINGSPEED", input_string);	
+		} else if(!strstr(namedPosString.c_str(), "FIRINGSPEED")) {
+			if(atof(input_string.c_str()) > 0) addNamedPosVar("FIRINGSPEED", input_string);	
 			else addNamedPosVar("FIRINGSPEED", "0");	
-		} else if(!strstr(namedPosString, "PROJECTILESPEED")) {
-			if(atof(input_string) > 0) addNamedPosVar("PROJECTILESPEED", input_string);
+		} else if(!strstr(namedPosString.c_str(), "PROJECTILESPEED")) {
+			if(atof(input_string.c_str()) > 0) addNamedPosVar("PROJECTILESPEED", input_string);
 			else addNamedPosVar("PROJECTILESPEED", "1");		
 		}
 	} else if(namedPosType == GO_TYPE_SWITCH) {
-		if(!strstr(namedPosString, "SWITCHTIMES")) {
-			if(atof(input_string) >= 0) addNamedPosVar("SWITCHTIMES", input_string);
+		if(!strstr(namedPosString.c_str(), "SWITCHTIMES")) {
+			if(atof(input_string.c_str()) >= 0) addNamedPosVar("SWITCHTIMES", input_string);
 			else addNamedPosVar("SWITCHTIMES", "-1");
 			showInfoBox("you want to bind the switch to\nleft click on the object\nPlease,", INFOBOX_DEFAULT_TIMEOUT+2.f);
 			settingDestination = true;	
 		}	
 	} else if(namedPosType == GO_TYPE_TEXT) {
-		if(!strstr(namedPosString, "SIZE")) {
+		if(!strstr(namedPosString.c_str(), "SIZE")) {
 			addNamedPosVar("SIZE", input_string);
 			settingDestination = true;	
 		} else {
 			addNamedPosVar("TEXT", input_string);	
 		}
 	} else if(namedPosType == GO_TYPE_GRAVITYLIFT) {
-		if(!strstr(namedPosString, "FORCE")) {
+		if(!strstr(namedPosString.c_str(), "FORCE")) {
 			addNamedPosVar("FORCE", input_string);	
 		}	
 	}
@@ -675,30 +655,21 @@ bool LevelEditor::checkTileCollision(vector2 displacement) {
 	return event.doIntersect;
 }
 
-void LevelEditor::startAddNamedPos(const char* name) {
-	if(namedPosName) delete [] namedPosName;
-	namedPosName = new char[MAX_TEXT_BUFFER];
-	int namelen = strlen(name);
-	for(int x=0; x<namelen; x++) namedPosName[x] = name[x];
-	namedPosName[namelen] = 0;
-	
+void LevelEditor::startAddNamedPos(const std::string& name) {
+	namedPosName = name;
 	state = STATE_ADDING_NAMED_POS;
-	if(namedPosString) delete [] namedPosString;
-	namedPosString = new char[MAX_TEXT_BUFFER];
-	namedPosString[0] = 0;
-	sprintf(namedPosString, "OBJ=%s", name);
-	namedPosString[4+strlen(name)] = 0;
+	namedPosString = "OBJ=" + name;
 	if(!namedPos_wallmount)
 		gfx->setCursor(false);
 	namedPos_sprite_texid = gfx->getTexMgr()->getId(name);
 	nameVarLen = 0;
 }
 
-void LevelEditor::addNamedPosVar(const char* var, const char* value) {
+void LevelEditor::addNamedPosVar(const std::string& var, const std::string& value) {
 	if(state == STATE_ADDING_NAMED_POS) {
-		if(!namedPosString) return;
-		if(!var || !value) return;
-		sprintf(namedPosString, "%s_%s=%s", namedPosString, var, value);
+		if(namedPosString == "") return;
+		if(var == "" || value == "") return;
+		namedPosString = namedPosString + "_" + var + "=" + value;
 	}
 }
 
@@ -708,10 +679,10 @@ void LevelEditor::drawCursor(float frameDelta) {
 		int index = gfx->getLevel()->findNamedPosition(mousepos);
 		
 		if(index >= 0) {
-			char* objType = gfx->getLevel()->getNamedPosValue(index, "OBJ");
-			if(!strcmp("SWITCH", objType) || !strcmp("PRESSUREPAD", objType)) {
-				char* targetName = gfx->getLevel()->getNamedPosValue(index, "TARGET");
-				if(targetName) {
+			std::string objType = gfx->getLevel()->getNamedPosValue(index, "OBJ");
+			if(("SWITCH" == objType) || ("PRESSUREPAD" == objType)) {
+				std::string targetName = gfx->getLevel()->getNamedPosValue(index, "TARGET");
+				if(targetName != "") {
 					SceneNode* obj = gfx->getLevel()->getObjectByName(targetName);
 					if(obj) {
 						Primitive* x = obj->getCollisionPrimitive();
@@ -720,7 +691,6 @@ void LevelEditor::drawCursor(float frameDelta) {
 						if(x)
 							gfx->getRenderer()->drawLine(x->center, switchpos, clr, clr, false);
 					}
-					delete [] targetName;
 				}
 			}
 		}
@@ -986,13 +956,13 @@ void LevelEditor::receiveKeyEvent(list<KeyEvent> events) {
 						break;
 						}
 					state = STATE_SAVING_LEVEL;
-					if(!filename) {
+					if(filename != "") {
 						openInputBox("Enter level name:", filename);
 						saveInputBox = true;
 					} else {
 						gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
 						char* buffer = new char[MAX_TEXT_BUFFER];
-						sprintf(buffer, "Saved \"%s\"..", filename);
+						sprintf(buffer, "Saved \"%s\"..", filename.c_str());
 						showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);
 						delete [] buffer;
 					}
@@ -1019,12 +989,12 @@ void LevelEditor::receiveKeyEvent_moveNamedPos(KeyEvent event) {
 	int index = gfx->getLevel()->findNamedPosition(coords);
 	if(index >= 0){
 		namedPosString = new char[NAMED_POSITION_LEN];
-		char* str = gfx->getLevel()->getNamedPosString(index);
+		std::string str = gfx->getLevel()->getNamedPosString(index);
 		for(int pp=0; pp<strlen(str); pp++) {
 			namedPosString[pp] = str[pp];
 		}
 		namedPosString[strlen(str)] = 0;
-		char* type = gfx->getLevel()->getNamedPosValue(index, "OBJ");
+		std::string type = gfx->getLevel()->getNamedPosValue(index, "OBJ");
 		namedPos_sprite_texid = gfx->getTexMgr()->getId(type);
 		state = STATE_ADDING_NAMED_POS;
 		settingDestination = false;
@@ -1055,13 +1025,13 @@ void LevelEditor::receiveKeyEvent_addNamedPos(KeyEvent event) {
 			int index = gfx->getLevel()->findNamedPosition(coords);
 			if(index < 0) return;
 			
-			char* targetType = gfx->getLevel()->getNamedPosValue(index, "OBJ");
-			if(strcmp(targetType, "WALLLASER") != 0 && strcmp(targetType, "WALLDOOR") != 0 && strcmp(targetType, "ROBOTGUARD") != 0) {
+			std::string targetType = gfx->getLevel()->getNamedPosValue(index, "OBJ");
+			if(targetType != "WALLLASER" && targetType != "WALLDOOR" && targetType != "ROBOTGUARD") {
 				showInfoBox("lasers and robot guards\nyou can only bind switches and pressure pads to\nSorry,", INFOBOX_DEFAULT_TIMEOUT);
 				return;	
 			}
 				
-			char* targetName = gfx->getLevel()->getNamedPosValue(index, "NAME");
+			std::string targetName = gfx->getLevel()->getNamedPosValue(index, "NAME");
 			addNamedPosVar("TARGET", targetName);
 			SceneNode* obj = gfx->getLevel()->getObjectByName(targetName);
 			if(!obj) {
@@ -1074,7 +1044,6 @@ void LevelEditor::receiveKeyEvent_addNamedPos(KeyEvent event) {
 			if(obj->getSwitch())
 				addNamedPosVar("STATE", "1");
 			else addNamedPosVar("STATE", "0");
-			delete [] targetName;
 			settingDestination = false;
 			gfx->setCursor(false);
 		} else if(namedPos_wallmount && gfx->getLevel()->getTile(coords) == 15) {
@@ -1087,12 +1056,12 @@ void LevelEditor::receiveKeyEvent_addNamedPos(KeyEvent event) {
 			
 			if(gfx->getLevel()->checkNamedPosArea(bounding_box) == -1) {
 				if(nameVarLen) {
-					namedPosString[strlen(namedPosString)-nameVarLen-6] = 0;	
+					namedPosString = namedPosString.substr(0, namedPosString.size() - nameVarLen - 6);
 				}
 
 				char* tmp = new char[MAX_TEXT_BUFFER];
 				tmp[0] = 0;
-				sprintf(tmp, "%s%i.%i", namedPosName, gfx->getLevel()->getNamedPositionsN(), rand() % 10000);
+				sprintf(tmp, "%s%i.%i", namedPosName.c_str(), gfx->getLevel()->getNamedPositionsN(), rand() % 10000);
 				nameVarLen = strlen(tmp);
 				addNamedPosVar("NAME", tmp);
 				delete [] tmp;
@@ -1103,12 +1072,12 @@ void LevelEditor::receiveKeyEvent_addNamedPos(KeyEvent event) {
 			showInfoBox("(this object belongs on a wall)\nCan't place here!", INFOBOX_DEFAULT_TIMEOUT);
 		} else if(!checkNamedPosCollision(coords)) {
 			if(nameVarLen) {
-				namedPosString[strlen(namedPosString)-nameVarLen-6] = 0;	
+				namedPosString = namedPosString.substr(0, namedPosString.size() - nameVarLen - 6);
 			}
 
 			char* tmp = new char[MAX_TEXT_BUFFER];
 			tmp[0] = 0;
-			sprintf(tmp, "%s%i.%i", namedPosName, gfx->getLevel()->getNamedPositionsN(), rand() % 100);
+			sprintf(tmp, "%s%i.%i", namedPosName.c_str(), gfx->getLevel()->getNamedPositionsN(), rand() % 100);
 			nameVarLen = strlen(tmp);
 			addNamedPosVar("NAME", tmp);
 			delete [] tmp;
@@ -1121,12 +1090,12 @@ void LevelEditor::receiveKeyEvent_addNamedPos(KeyEvent event) {
 			gfx->getLevel()->addNamedPosition(coords, namedPosString);
 		} else if(namedPosType == GO_TYPE_TEXT) {
 			if(nameVarLen) {
-				namedPosString[strlen(namedPosString)-nameVarLen-6] = 0;	
+				namedPosString = namedPosString.substr(0, namedPosString.size() - nameVarLen - 6);
 			}
 
 			char* tmp = new char[MAX_TEXT_BUFFER];
 			tmp[0] = 0;
-			sprintf(tmp, "%s%i.%i", namedPosName, gfx->getLevel()->getNamedPositionsN(), rand() % 100);
+			sprintf(tmp, "%s%i.%i", namedPosName.c_str(), gfx->getLevel()->getNamedPositionsN(), rand() % 100);
 			nameVarLen = strlen(tmp);
 			addNamedPosVar("NAME", tmp);
 			delete [] tmp;

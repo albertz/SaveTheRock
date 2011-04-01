@@ -1061,7 +1061,7 @@ void Ragdoll::addFriction(CollisionEvent event) {
 	}	
 }
 
-void Ragdoll::init(vector2 position, const char* texture_name) {
+void Ragdoll::init(vector2 position, const std::string& texture_name) {
 	sprite = new AnimatedSpriteSceneNode(gfx);
 	int texid = gfx->getTexMgr()->getId(texture_name);
 	if(texid == -1) {

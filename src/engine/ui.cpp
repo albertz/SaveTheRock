@@ -45,8 +45,6 @@ UILabel::UILabel(GfxMgr* gfx_n){
 	uiwidget_type = UIWIDGET_TYPE_LABEL;
 	
 	_isActive = false;
-	text = NULL;
-	text_len = 0;
 	level_label = false;
 
 	doFadeIn = false;
@@ -63,7 +61,7 @@ void UILabel::update(float frameDelta) {
 		screen.bottom_left = camerapos;
 		screen.top_right = camerapos + wparams;
 		
-		vector2 center = position + vector2((text_size-text_size/2.f)*(text_len+1.f)/2.f, text_size);
+		vector2 center = position + vector2((text_size-text_size/2.f)*(text.size()+1.f)/2.f, text_size);
 		bool isInsideScreen = screen.checkPointInside(center);
 		if(isInsideScreen && clr[3] == 0.f) {
 			fadeIn();
@@ -95,9 +93,9 @@ void UILabel::update(float frameDelta) {
 		}
 		
 		if(!level_label) 
-			gfx->getRenderer()->drawText(text, text_len, text_font, text_size, clr, position);
+			gfx->getRenderer()->drawText(text, text.size(), text_font, text_size, clr, position);
 		else
-			gfx->getRenderer()->drawText(text, text_len, text_font, text_size, clr, position-gfx->getCamera()->getAbsoluteTranslation());
+			gfx->getRenderer()->drawText(text, text.size(), text_font, text_size, clr, position-gfx->getCamera()->getAbsoluteTranslation());
 	}
 }
 
@@ -105,13 +103,8 @@ void UILabel::setPosition(vector2 position_n) {
 	position = position_n;
 }
 
-void UILabel::setText(const char* text_n, bool font_n, float size_n, bool level_label_n) {
-	text_len = strlen(text_n);
-	if(text) delete text;
-	text = new char[text_len];
-	for(int x=0; x<text_len; x++) {
-		text[x] = text_n[x];	
-	}
+void UILabel::setText(const std::string& text_n, bool font_n, float size_n, bool level_label_n) {
+	text = text_n;
 	text_font = font_n;
 	text_size = size_n;
 	level_label = level_label_n;
@@ -123,7 +116,7 @@ aabb2 UILabel::getBoundingBox() {
 	// but makes bounds calculation not trivial
 	// we don't really need to detect events on large bodies of text, rather just menu labels, so it's ok (;
 	bounding_box.bottom_left.set(position[0], position[1]);
-	bounding_box.top_right.set(position[0]+(text_size-text_size/2)*(text_len+1), position[1]+text_size);
+	bounding_box.top_right.set(position[0]+(text_size-text_size/2)*(text.size()+1), position[1]+text_size);
 	return bounding_box;
 }
 
@@ -173,7 +166,7 @@ void UIImage::setPosition(vector2 position_n) {
 	image->vertices[3] = position + vector2(0.f, size[1]);
 }
 
-void UIImage::setImage(const char* texture_name) {
+void UIImage::setImage(const std::string& texture_name) {
 	sprite = new AnimatedSpriteSceneNode(gfx);
 	int texid = gfx->getTexMgr()->getId(texture_name);
 	size = gfx->getTexMgr()->getSize(texid);
@@ -292,7 +285,7 @@ void UIInfoBox::setTimeout(float seconds) {
 	timeOut = seconds;
 }
 
-void UIInfoBox::addText(const char* text, bool isGray) {
+void UIInfoBox::addText(const std::string& text, bool isGray) {
 	UILabel* label = new UILabel(gfx);
 	if(isGray)
 		label->setColor(MENU_TEXT_COLOR_SELECTED);
@@ -302,7 +295,7 @@ void UIInfoBox::addText(const char* text, bool isGray) {
 	label->setActive(false);
 //	label->fadeIn();
 	
-	float minMenuSizeX = strlen(text)*(text_size-text_size/2);
+	float minMenuSizeX = text.size()*(text_size-text_size/2);
 	if(minMenuSizeX > size[0]) size[0] = minMenuSizeX;
 	size[1] = (labels_n+1)*text_size;
 	
@@ -393,7 +386,6 @@ UIInputBox::UIInputBox(GfxMgr* gfx_n) {
 	quad2->type = PRIM_TYPE_QUAD;	
 	
 	returnState = false;
-	returnString = NULL;
 	
 	alphanumeric = true;
 	clr2 = INPUTBOX_COLOR;
@@ -472,15 +464,15 @@ void UIInputBox::setPosition(vector2 position_n) {
 	position = position_n;
 }
 
-void UIInputBox::setInputBox(const char* label_text, bool alphanumeric_n) {
+void UIInputBox::setInputBox(const std::string& label_text, bool alphanumeric_n) {
 	size = vector2(800.f, 200.f);
 	margin = 5.f;
 	text_size = 23.f;
 	text_font = MENU_FONT;
 	alphanumeric = alphanumeric_n;
 
-	char* tmp = new char[MAX_TEXT_BUFFER];
-	sprintf(tmp, "%s\n\npress <enter> to continue or <escape> to cancel", label_text);
+	std::string tmp = label_text;
+	tmp += "\n\npress <enter> to continue or <escape> to cancel";
 
 	label = new UILabel(gfx);
 	label->setColor(MENU_TEXT_COLOR);
@@ -493,40 +485,31 @@ void UIInputBox::setInputBox(const char* label_text, bool alphanumeric_n) {
 	text->setText("", text_font, text_size);
 	text->setPosition(vector2(position[0] + margin, position[1] + margin));
 	gfx->addSceneNode(text, this);
-	
-	input = NULL;
-	input_len = 0;
 }
 
-void UIInputBox::setText(const char* text_n) {
-	input_len = strlen(text_n);
-	if(input_len) {
-		input = new char[input_len+1];
-		for(int x=0; x<=input_len; x++) input[x] = text_n[x];	
-	}
+void UIInputBox::setText(const std::string& text_n) {
+	input = text_n;
 }
 
 int UIInputBox::pollStatus() {
 	return returnState;	
 }
 
-char* UIInputBox::getReturnString() {
+std::string UIInputBox::getReturnString() {
 	return returnString;
 }
 
 void UIInputBox::resetStatus() {
 	returnState = false;
-	if(returnString) delete [] returnString;
-	returnString = NULL;	
+	returnString = "";
 }
 
 void UIInputBox::receiveKeyEvent(list<KeyEvent> events) {
-	char* tmp;
 	for(list<KeyEvent>::iterator x = events.begin(); x != events.end(); x++) {
 		switch((*x).key) {
 		case KEY_ENTER:
 			if((*x).state == GLFW_PRESS) {
-				if(input_len > 0) {
+				if(input.size() > 0) {
 					returnState = true;
 					returnString = input;
 					fadeOut();
@@ -545,37 +528,22 @@ void UIInputBox::receiveKeyEvent(list<KeyEvent> events) {
 			break;
 		case KEY_BACKSPACE:
 			if((*x).state == GLFW_PRESS) {
-				if(input_len > 0) {
-					if(input[input_len-1] == 46) dotCount = false;
-					tmp = new char[input_len];
-					for(int p=0; p<input_len-1; p++) {
-						tmp[p] = input[p];	
-					}
-					tmp[input_len-1] = 0;
-					delete [] input;
-					input = tmp;
-					input_len--;
+				if(input.size() > 0) {
+					if(input[input.size()-1] == 46) dotCount = false;
+					input = input.substr(0, input.size()-1);
 				}
 			}
 			break;
 		case KEY_SPACE:
 			if((*x).state == GLFW_PRESS) {
-				if(!alphanumeric && input_len > INPUTBOX_CHAR_LIMIT) break;
-				tmp = new char[input_len+2];
-				for(int p=0; p<input_len; p++) {
-					tmp[p] = input[p];	
-				}
-				tmp[input_len] = 32;
-				tmp[input_len+1] = 0;
-				delete [] input;
-				input = tmp;
-				input_len++;
+				if(!alphanumeric && input.size() > INPUTBOX_CHAR_LIMIT) break;
+				input += " ";
 			}
 			break;
 		case KEY_CHR:
 			if((*x).state == GLFW_PRESS && (*x).chr > 31 && (*x).chr < 160) {
 				if(!alphanumeric) {					
-					if(input_len > INPUTBOX_CHAR_LIMIT) break;
+					if(input.size() > INPUTBOX_CHAR_LIMIT) break;
 					if((*x).chr < 45 || (*x).chr > 57 || (*x).chr == 47)
 						break;
 					else if((*x).chr == 46)
@@ -583,26 +551,20 @@ void UIInputBox::receiveKeyEvent(list<KeyEvent> events) {
 							dotCount = true;	
 						else break;
 					else if((*x).chr == 45)
-						if(input_len != 0)
+						if(input.size() != 0)
 							break;	
 				}
-				tmp = new char[input_len+2];
-				for(int p=0; p<input_len; p++) {
-					tmp[p] = input[p];	
-				}
+				
 				if((*x).chr > 64 && (*x).chr < 91)
-					tmp[input_len] = (*x).chr + 32;
-				else tmp[input_len] = (*x).chr;
-				tmp[input_len+1] = 0;
-				delete [] input;
-				input = tmp;
-				input_len++;
+					input += char((*x).chr + 32);
+				else
+					input += char((*x).chr);
 			}
 			break;
 		}
 	}
-	if(input)
-		text->setText(input, text_font, text_size);
+
+	text->setText(input, text_font, text_size);
 }
 
 void UIInputBox::fadeIn() {
@@ -751,7 +713,7 @@ void UIMenu::setMenu(float margin_n, float text_size_n, bool font_n, bool mouseC
 	mouseControl = mouseControl_n;
 }
 
-void UIMenu::addMenuOption(const char* text, bool isSelected) {
+void UIMenu::addMenuOption(const std::string& text, bool isSelected) {
 	UILabel* label = new UILabel(gfx);
 	if(isSelected)
 		label->setColor(MENU_TEXT_COLOR_SELECTED);
@@ -761,7 +723,7 @@ void UIMenu::addMenuOption(const char* text, bool isSelected) {
 	label->setActive(false);
 //	label->fadeIn();
 	
-	float minMenuSizeX = strlen(text)*(text_size-text_size/2);
+	float minMenuSizeX = text.size()*(text_size-text_size/2);
 	if(minMenuSizeX > size[0]) size[0] = minMenuSizeX;
 	size[1] = (labels_n+1)*text_size;
 	

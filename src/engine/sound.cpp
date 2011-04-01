@@ -17,32 +17,26 @@ SndMgr::SndMgr(GfxMgr* gfx_n) {
 	__muteMusic = false;
 	
 	sounds = new SoundEffectPtr[MAX_SOUNDS_N];
-	sound_names = new char*[MAX_SOUNDS_N];
+	sound_names = new std::string[MAX_SOUNDS_N];
 	sounds_n = 0;
 	music_tracks_n = 0;
 	
 	nextTrackTimer = MUSIC_TRACK_SWITCH_TIME;
 }
 
-void SndMgr::__addSound(const char* name, const char* filepath) {
-	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
+void SndMgr::__addSound(const std::string& name, const std::string& filepath) {
+	sounds[sounds_n] = OpenSoundEffect(device, filepath.c_str(), SINGLE);
 	if(sounds[sounds_n].get() == NULL)
 		std::cout << "failed to load sound: " << filepath << std::endl;
-	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
-	int namelen = strlen(name);
-	for(int x=0; x<namelen; x++) sound_names[sounds_n][x] = name[x];
-	sound_names[sounds_n][namelen] = 0;
+	sound_names[sounds_n] = name;
 	sounds_n++;
 }
 
-void SndMgr::__addMusic(const char* name, const char* filepath) {
-	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
+void SndMgr::__addMusic(const std::string& name, const std::string& filepath) {
+	sounds[sounds_n] = OpenSoundEffect(device, filepath.c_str(), SINGLE);
 	if(sounds[sounds_n].get() == NULL)
 		std::cout << "failed to load music: " << filepath << std::endl;
-	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
-	int namelen = strlen(name);
-	for(int x=0; x<namelen; x++) sound_names[sounds_n][x] = name[x];
-	sound_names[sounds_n][namelen] = 0;
+	sound_names[sounds_n] = name;
 	sounds_n++;
 }
 
@@ -80,7 +74,7 @@ void SndMgr::update(float frameDelta) {
 	}
 }
 
-void SndMgr::playSound(const char* name, vector2 transmitter_pos) {
+void SndMgr::playSound(const std::string& name, vector2 transmitter_pos) {
 	if(__muteAll) return;
 	
 	vector2 camerapos = gfx->getCamera()->getAbsoluteTranslation();
@@ -98,7 +92,7 @@ void SndMgr::playSound(const char* name, vector2 transmitter_pos) {
 	float pan = fabs(center[0] - transmitter_pos[0])/(wparams[0]*0.5f) * sign;
 	
 	for(int x=0; x<sounds_n; x++) {
-		if(!strcmp(sound_names[x], name)) {
+		if(sound_names[x] == name) {
 			if(sounds[x]) {
 				sounds[x]->setPan(pan);
 				sounds[x]->setVolume(0.5f);
@@ -123,12 +117,12 @@ void SndMgr::playRandMusic() {
 	delete [] name;	
 }
 
-void SndMgr::playMusic(const char* name) {
+void SndMgr::playMusic(const std::string& name) {
 	if(__muteAll) return;
 	if(__muteMusic) return;
 
 	for(int x=0; x<sounds_n; x++) {
-		if(!strcmp(sound_names[x], name)) {
+		if(sound_names[x] == name) {
 			if(sounds[x]) {
 				sounds[x]->setVolume(0.2f);
 				sounds[x]->play();
