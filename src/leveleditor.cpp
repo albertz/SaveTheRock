@@ -695,7 +695,7 @@ void LevelEditor::startAddNamedPos(char* name) {
 }
 
 void LevelEditor::addNamedPosVar(const char* var, const char* value) {
-	if(state = STATE_ADDING_NAMED_POS) {
+	if(state == STATE_ADDING_NAMED_POS) {
 		if(!namedPosString) return;
 		if(!var || !value) return;
 		sprintf(namedPosString, "%s_%s=%s", namedPosString, var, value);
