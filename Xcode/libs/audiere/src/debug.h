@@ -28,7 +28,7 @@ namespace audiere {
 
   class Guard {
   public:
-    Guard(const char* label)
+	  Guard(const std::string& label)
     : m_label(label) {
       Write("+");
       Log::IncrementIndent();
@@ -40,7 +40,7 @@ namespace audiere {
     }
 
     void Write(const char* prefix) {
-      Log::Write((prefix + m_label).c_str());
+      Log::Write(prefix + m_label);
     }
 
   private:
