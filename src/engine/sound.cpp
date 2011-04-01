@@ -109,6 +109,7 @@ void SndMgr::playRandMusic() {
 			sounds[x]->stop();	
 	}
 	
+	if(music_tracks_n == 0) return;
 	int x = rand() % music_tracks_n;
 	char* name = new char[MAX_PATH];
 	sprintf(name, "MUSIC_%i", x);
