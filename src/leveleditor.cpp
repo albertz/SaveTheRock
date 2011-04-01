@@ -56,7 +56,7 @@ LevelEditor::~LevelEditor() {
 	gfx->getInputHandler()->deleteReceiver(this);	
 }
 
-void LevelEditor::showLabel(char* text) {
+void LevelEditor::showLabel(const char* text) {
 	if(label) gfx->deleteSceneNode(label);
 	label = new UILabel(gfx);
 	label->setColor(MENU_TEXT_COLOR);
@@ -75,17 +75,11 @@ void LevelEditor::hideLabel() {
 	}
 }
 
-void LevelEditor::showInfoBox(char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, char* delimiter) {
+void LevelEditor::showInfoBox(const char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
 	if(infobox) gfx->deleteSceneNode(infobox);
 
-	bool delimiterSet = true;
-
-	if(!delimiter) {
-		delimiterSet = false;
-		delimiter = new char[2];
-		delimiter[0] = '\n';
-		delimiter[1] = 0;
-	}
+	if(!delimiter)
+		delimiter = "\n";
 
 	infobox = new UIInfoBox(gfx);
 	infobox->allowClose(true);
@@ -546,7 +540,7 @@ void LevelEditor::pollInputBox(float frameDelta) {
 	}
 }
 
-void LevelEditor::pollInputBoxSaveLevel(char* input_string) {
+void LevelEditor::pollInputBoxSaveLevel(const char* input_string) {
 	int len = strlen(input_string);
 	if(filename) delete [] filename;
 	filename = new char[len+1];
@@ -559,7 +553,7 @@ void LevelEditor::pollInputBoxSaveLevel(char* input_string) {
 	delete [] buffer;
 }
 
-void LevelEditor::pollInputBoxAddingNamedPos(char* input_string) {
+void LevelEditor::pollInputBoxAddingNamedPos(const char* input_string) {
 	int len = strlen(input_string);
 	if(namedPosType == GO_TYPE_WALLLASER) {
 		if(!strstr(namedPosString, "TYPE")) {

@@ -71,10 +71,10 @@ class LevelEditor : public SceneNode {
 	
 	bool saveInputBox;
 	
-	void showLabel(char* text);
+	void showLabel(const char* text);
 	void hideLabel();
 	 
-	void showInfoBox(char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, char* delimiter=NULL);
+	void showInfoBox(const char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, const char* delimiter=NULL);
 	void hideInfoBox();
 	void openInputBox(char* title, char* text=NULL, bool alphanumeric=true);
 	
@@ -88,8 +88,8 @@ class LevelEditor : public SceneNode {
 	void pollLoadMenu(float frameDelta);
 	void pollObjectsMenu(float frameDelta);
 	void pollInputBox(float frameDelta);
-	void pollInputBoxSaveLevel(char* input_string);
-	void pollInputBoxAddingNamedPos(char* input_string);
+	void pollInputBoxSaveLevel(const char* input_string);
+	void pollInputBoxAddingNamedPos(const char* input_string);
 	void pollInputBoxExportingLevelInfo(char* input_string);
 	
 	void doDrawing(float frameDelta);
