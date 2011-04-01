@@ -128,15 +128,9 @@ void Game::saveDatabase() {
 
 void Game::showInfoBox(const char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
 	if(infobox) gfx->deleteSceneNode(infobox);
-
-	bool delimiterSet = true;
-
-	if(!delimiter) {
-		delimiterSet = false;
-		delimiter = new char[2];
-		delimiter[0] = '\n';
-		delimiter[1] = 0;
-	}
+	
+	if(!delimiter)
+		delimiter = "\n";
 
 	infobox = new UIInfoBox(gfx);
 	infobox->allowClose(true);
@@ -160,7 +154,6 @@ void Game::showInfoBox(const char* text, float timeOut, float textSize, vector2 
 	gfx->getUI()->addWidget(infobox);
 	infobox->fadeIn();
 	delete buffer;
-	if(!delimiterSet) delete delimiter;
 }
 
 void Game::hideInfoBox() {
