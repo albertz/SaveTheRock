@@ -223,9 +223,9 @@ class TexMgr {
 	/* TexMgr provides a high-level interface for loading textures */
 	TexMgr(GfxMgr* gfx_n);
 	void init();
-	void addTexture(char* name, char* filepath);
+	void addTexture(const char* name, const char* filepath);
 	
-	int getId(char* name);
+	int getId(const char* name);
 	unsigned int* getTexture(int id);
 	vector2 getSize(int id);
 	vector2 getTexSize(int id);

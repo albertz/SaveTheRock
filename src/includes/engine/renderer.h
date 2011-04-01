@@ -109,7 +109,7 @@ class renderer {
 	void drawLevelVBO(float* vertex_list, int vl_ptr);
 	void redrawLevel();
 	void drawSprite(DrawPrimitive* x, unsigned int texture);
-	unsigned int* loadTexturesFromFile(char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret);
+	unsigned int* loadTexturesFromFile(const char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret);
 	unsigned int loadTextureRGB(char* data, vector2 size);
 	vector2 getWindowParams();
 };

@@ -749,7 +749,7 @@ void renderer::redrawLevel() {
 }
 
 
-unsigned int* renderer::loadTexturesFromFile(char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret) {
+unsigned int* renderer::loadTexturesFromFile(const char* filename, int* frames_ret, int* size_x_ret, int* size_y_ret, int* real_size_x_ret, int* real_size_y_ret) {
 	ifstream animFile(filename, ios::binary);
 	assert(animFile.is_open());
 	RGB_RAW_ANIMATION_FILE fileAttr;

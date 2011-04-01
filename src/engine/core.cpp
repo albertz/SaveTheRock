@@ -292,7 +292,7 @@ TexMgr::TexMgr(GfxMgr* gfx_n) {
 	textures_n = 0;
 }
 
-void TexMgr::addTexture(char* name, char* filepath) {
+void TexMgr::addTexture(const char* name, const char* filepath) {
 	int frames_n, size_x, size_y, real_size_x, real_size_y, len;
 	textures[textures_n] = gfx->getRenderer()->loadTexturesFromFile(filepath, &frames_n, &size_x, &size_y, &real_size_x, &real_size_y);
 	textures_sizes[textures_n] = vector2(size_x, size_y);
@@ -332,7 +332,7 @@ void TexMgr::init() {
 
 }
 
-int TexMgr::getId(char* name) {
+int TexMgr::getId(const char* name) {
 	for(int x=0; x < textures_n; x++) {
 		if(strcmp(textures_names[x], name) == 0) {
 			return x;	
