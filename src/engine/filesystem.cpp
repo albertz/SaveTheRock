@@ -7,7 +7,6 @@
 
 using namespace std;
 
-#ifdef _WIN32
 
 Filesystem::Filesystem() {
 	root = new char[strlen(FILESYSTEM_ROOT)+1];
@@ -36,11 +35,11 @@ char* Filesystem::getLevelFilename(char* name, bool special) {
 	if(!special)
 		size = strlen(levels_dir) + strlen(name) + strlen(".lvl");
 	else
-		size = strlen(levels_dir) + strlen("\\special\\") + strlen(name) + strlen(".lvl");
+		size = strlen(levels_dir) + strlen("/special/") + strlen(name) + strlen(".lvl");
 	level_filename = new char[size];
 	for(int x=0; x<size; x++) level_filename[x] = 0;
 	strcat(level_filename, levels_dir);
-	if(special) strcat(level_filename, "\\special\\");
+	if(special) strcat(level_filename, "/special/");
 	strcat(level_filename, name);
 	strcat(level_filename, ".lvl");
 	return level_filename;
@@ -49,6 +48,7 @@ char* Filesystem::getLevelFilename(char* name, bool special) {
 list<char*>* Filesystem::getCustomLevels() {
 	custom_levels->clear();
 	char* path = new char[MAX_PATH];
+#ifdef _WIN32
 	WIN32_FIND_DATA fd;
 	DWORD dwAttr = FILE_ATTRIBUTE_DIRECTORY;
 	sprintf(path, "%s\\*", levels_dir);
@@ -69,12 +69,14 @@ list<char*>* Filesystem::getCustomLevels() {
 		}
 		FindClose(hFind);
 	}
+#endif
 	return custom_levels;
 }
 
 list<char*>* Filesystem::getMusicFiles() {
 	music_names->clear();
 	char* path = new char[MAX_PATH];
+#ifdef _WIN32
 	WIN32_FIND_DATA fd;
 	DWORD dwAttr = FILE_ATTRIBUTE_DIRECTORY;
 	sprintf(path, "%s\\*", music_dir);
@@ -93,6 +95,7 @@ list<char*>* Filesystem::getMusicFiles() {
 		}
 		FindClose(hFind);
 	}
+#endif
 	return music_names;
 }
 
@@ -116,14 +119,3 @@ void Filesystem::freeMemory(FILESYSTEM_MEMORY type) {
 	}
 }
 
-#else
-static std::list<char*> musicfiles;
-static std::list<char*> customlevels;
-
-Filesystem::Filesystem() {}
-char* Filesystem::getLevelFilename(char* name, bool special) { return NULL; }
-std::list<char*>* Filesystem::getCustomLevels() { return &customlevels; }
-std::list<char*>* Filesystem::getMusicFiles() { return &musicfiles; }
-char* Filesystem::getSoundFilename(char* name) { return NULL; }
-void Filesystem::freeMemory(FILESYSTEM_MEMORY type) {}
-#endif
