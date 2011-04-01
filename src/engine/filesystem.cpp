@@ -4,7 +4,9 @@
 
 
 #include "engine/headers.h"
+#ifndef _WIN32
 #include <dirent.h>
+#endif
 
 Filesystem::Filesystem() {
 	root = FILESYSTEM_ROOT;
@@ -46,7 +48,16 @@ std::list<std::string> Filesystem::getCustomLevels() {
 		FindClose(hFind);
 	}
 #else
-	
+	DIR* dirp = opendir(levels_dir.c_str());
+	dirent* dp = NULL;
+	while ((dp = readdir(dirp)) != NULL) {
+		std::string name = std::string(dp->d_name, dp->d_namlen);
+		if(name.size() <= 4) continue;
+		if(name[0] == '.') continue;
+		if(name.substr(name.size()-4) != ".lvl") continue;
+		custom_levels.push_back(name.substr(0,name.size()-4));
+	}
+	(void)closedir(dirp);
 #endif
 	return custom_levels;
 }
@@ -75,7 +86,15 @@ std::list<std::string> Filesystem::getMusicFiles() {
 		FindClose(hFind);
 	}
 #else
-	
+	DIR* dirp = opendir(music_dir.c_str());
+	dirent* dp = NULL;
+	while ((dp = readdir(dirp)) != NULL) {
+		std::string name = std::string(dp->d_name, dp->d_namlen);
+		if(name.size() <= 4) continue;
+		if(name[0] == '.') continue;
+		music_names.push_back(name.substr(0,name.size()-4));
+	}
+	(void)closedir(dirp);	
 #endif
 	return music_names;
 }
