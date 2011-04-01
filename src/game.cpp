@@ -193,9 +193,9 @@ void Game::openLoadCustomMenu() {
 		loadCustomMenu->setColor(MENU_COLOR);
 		loadCustomMenu->setMenu(10.f, 24.f, 0);
 		loadCustomMenu->addMenuOption("-back-", true);
-		list<char*>* levelslist = gfx->getFilesystem()->getCustomLevels();
-		for(list<char*>::iterator x = levelslist->begin(); x != levelslist->end(); x++) {
-			loadCustomMenu->addMenuOption(*x);
+		std::list<std::string> levelslist = gfx->getFilesystem()->getCustomLevels();
+		for(std::list<std::string>::iterator x = levelslist.begin(); x != levelslist.end(); x++) {
+			loadCustomMenu->addMenuOption(x->c_str());
 		}
 		gfx->getUI()->addWidget(loadCustomMenu);
 		loadCustomMenu->setPosition(vector2(100.f, 100.f));
@@ -427,7 +427,6 @@ void Game::pollLoadCustomMenu() {
 	int status;
 	if(loadCustomMenu) status = loadCustomMenu->pollStatus();
 	else status = 0;
-	char* filename;
 	if(status == -1) {
 		gfx->deleteSceneNode(loadCustomMenu);
 		loadCustomMenu = NULL;
@@ -435,12 +434,12 @@ void Game::pollLoadCustomMenu() {
 		changeState(STATE_MAIN_MENU);
 	} else {
 		int i = 1;
-		list<char*>* levels = gfx->getFilesystem()->getCustomLevels();
-		for(list<char*>::iterator x = levels->begin(); x != levels->end(); x++) {
+		std::list<std::string> levels = gfx->getFilesystem()->getCustomLevels();
+		for(list<std::string>::iterator x = levels.begin(); x != levels.end(); x++) {
 			if(i == status-1) {
-				filename = new char[strlen(*x)];
-				for(int p=0; p<strlen(*x); p++) filename[p] = (*x)[p];
-				filename[strlen(*x)] = 0;
+				char* filename = new char[x->size()];
+				for(int p=0; p<x->size(); p++) filename[p] = (*x)[p];
+				filename[x->size()] = 0;
 				level_filename = filename;
 				changeState(STATE_CUSTOM_LEVEL);
 				return;
@@ -650,7 +649,7 @@ void Game::enterCustomLevelState() {
 	gfx->recomputeBackground();
 	gfx->reinitLevel();
 	gfx->getPhysMgr()->setIterations(MIN_PHYS_ITERATIONS);
-	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename(level_filename), true);
+	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename(level_filename).c_str(), true);
 	gfx->getLevel()->setActive(true);
 	gfx->getCamera()->setKeyboardControl(false);
 	gfx->getPhysMgr()->startSimulation();
@@ -668,7 +667,7 @@ void Game::enterTutorialState() {
 	gfx->setCursor(false);
 	gfx->recomputeBackground();
 	gfx->reinitLevel();
-	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename("tutorial", true), true);
+	gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename("tutorial", true).c_str(), true);
 	gfx->getLevel()->setActive(true);
 	gfx->getCamera()->setKeyboardControl(false);
 	gfx->getPhysMgr()->startSimulation();

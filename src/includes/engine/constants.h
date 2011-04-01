@@ -21,17 +21,13 @@
 #define MAX_TEXT_BUFFER 1024
 
 // FILESYSTEM CONSTANTS
-#define FILESYSTEM_ROOT "..\\media\\"
-#define FILESYSTEM_LEVELS_DIR "levels\\"
-#define FILESYSTEM_SOUNDS_DIR "sounds\\"
-#define FILESYSTEM_MUSIC_DIR "music\\"
+#define FILESYSTEM_ROOT "../media/"
+#define FILESYSTEM_LEVELS_DIR "levels/"
+#define FILESYSTEM_SOUNDS_DIR "sounds/"
+#define FILESYSTEM_MUSIC_DIR "music/"
 
 // RENDERER CONSTANTS
-#ifdef _WIN32
-#define FONT_PATH "..\\media\\font.tga"
-#else
 #define FONT_PATH "../media/font.tga"
-#endif
 #define FONT_SIZE 64
 #define FONT_TEXTURE_SIZE 1024.f
 #define VERTEX_ARRAY_SIZE 64000

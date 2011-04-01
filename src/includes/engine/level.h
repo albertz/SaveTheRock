@@ -72,8 +72,8 @@ class LevelSceneNode : public SceneNode {
 		LevelSceneNode(GfxMgr* gfx);
 		~LevelSceneNode();
 		void populateWorld();
-		bool loadFromFile(char* filename, bool setActive=false);
-		bool writeToFile(char* filename);
+		bool loadFromFile(const char* filename, bool setActive=false);
+		bool writeToFile(const char* filename);
 		void update(float frameDelta);
 		void redraw();
 		bool drawSelf();

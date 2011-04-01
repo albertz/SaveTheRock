@@ -175,9 +175,9 @@ void LevelEditor::openLoadMenu(vector2 position) {
 		loadMenu->setColor(MENU_COLOR);
 		loadMenu->setMenu(10.f, 24.f, 0);
 		
-		list<char*>* levelslist = gfx->getFilesystem()->getCustomLevels();
-		for(list<char*>::iterator x = levelslist->begin(); x != levelslist->end(); x++) {
-			loadMenu->addMenuOption(*x);	
+		list<std::string> levelslist = gfx->getFilesystem()->getCustomLevels();
+		for(list<std::string>::iterator x = levelslist.begin(); x != levelslist.end(); x++) {
+			loadMenu->addMenuOption(x->c_str());	
 		}
 		
 		vector2 size = loadMenu->getSize();
@@ -361,14 +361,14 @@ void LevelEditor::pollLoadMenu(float frameDelta) {
 			loadMenu = NULL;	
 		} else {
 			int i = 1;
-			list<char*>* levels = gfx->getFilesystem()->getCustomLevels();
-			for(list<char*>::iterator x = levels->begin(); x != levels->end(); x++) {
+			std::list<std::string> levels = gfx->getFilesystem()->getCustomLevels();
+			for(list<std::string>::iterator x = levels.begin(); x != levels.end(); x++) {
 				if(i == loadMenuStatus) {
-					filename = new char[strlen(*x)];
-					for(int p=0; p<strlen(*x); p++) filename[p] = (*x)[p];
-					filename[strlen(*x)] = 0;
+					filename = new char[x->size()];
+					for(int p=0; p<x->size(); p++) filename[p] = (*x)[p];
+					filename[x->size()] = 0;
 			//		gfx->getLevel()->setShowNames(true);
-					gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename(filename));
+					gfx->getLevel()->loadFromFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
 					char* buffer = new char[MAX_TEXT_BUFFER];
 					sprintf(buffer, "Loaded \"%s\"..", filename);
 					showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);
@@ -545,7 +545,7 @@ void LevelEditor::pollInputBoxSaveLevel(const char* input_string) {
 	filename = new char[len+1];
 	for(int x=0; x<len; x++) filename[x] = input_string[x];
 	filename[len] = 0;
-	gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename));
+	gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
 	char* buffer = new char[MAX_TEXT_BUFFER];
 	sprintf(buffer, "Saved \"%s\"..", filename);
 	showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);
@@ -990,7 +990,7 @@ void LevelEditor::receiveKeyEvent(list<KeyEvent> events) {
 						openInputBox("Enter level name:", filename);
 						saveInputBox = true;
 					} else {
-						gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename));
+						gfx->getLevel()->writeToFile(gfx->getFilesystem()->getLevelFilename(filename).c_str());
 						char* buffer = new char[MAX_TEXT_BUFFER];
 						sprintf(buffer, "Saved \"%s\"..", filename);
 						showInfoBox(buffer, INFOBOX_DEFAULT_TIMEOUT);

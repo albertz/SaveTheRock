@@ -56,14 +56,14 @@ void SndMgr::init() {
 	__addSound("PLASMA", "../media/sounds/plasma.wav");
 	__addSound("GRAVLIFT", "../media/sounds/gravlift.wav");
 	
-	list<char*>* music = gfx->getFilesystem()->getMusicFiles();
+	std::list<std::string> music = gfx->getFilesystem()->getMusicFiles();
 	int music_n = 0;
-	for(list<char*>::iterator x = music->begin(); x != music->end(); x++) {
+	for(std::list<std::string>::iterator x = music.begin(); x != music.end(); x++) {
 		char* tmp = new char[MAX_PATH];
 		tmp[0] = 0;
 		sprintf(tmp, "MUSIC_%i", music_n);
 		char* path = new char[MAX_PATH];
-		sprintf(path, "../media/music/%s", *x);
+		sprintf(path, "../media/music/%s", x->c_str());
 		__addMusic(tmp, path);	
 		delete [] tmp;
 		delete [] path;

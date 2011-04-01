@@ -6,32 +6,21 @@
 #ifndef __FILESYSTEM_H
 #define __FILESYSTEM_H
 
-enum FILESYSTEM_MEMORY {
-	MEMORY_TYPE_LEVEL_FILENAME = 0,
-	MEMORY_TYPE_CUSTOM_LEVELS = 1,
-	MEMORY_TYPE_SOUND_FILENAME = 2,
-};
+#include <string>
 
 class Filesystem {
-	char* root;
-	char* levels_dir;
-	char* sounds_dir;
-	char* music_dir;
+	std::string root;
+	std::string levels_dir;
+	std::string sounds_dir;
+	std::string music_dir;
 	
-	char* level_filename;
-	std::list<char*>* custom_levels;
-	std::list<char*>* music_names;
-	char* sound_filename;
-	
-	public:
+public:
 	Filesystem();
-	char* getLevelFilename(const char* name, bool special=false);
-	std::list<char*>* getCustomLevels();
-	std::list<char*>* getMusicFiles();
+	std::string getLevelFilename(const std::string& name, bool special=false);
+	std::list<std::string> getCustomLevels();
+	std::list<std::string> getMusicFiles();
 	
-	char* getSoundFilename(char* name);
-	
-	void freeMemory(FILESYSTEM_MEMORY type);
+	std::string getSoundFilename(const std::string& name);
 };
 
 #endif

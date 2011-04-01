@@ -76,7 +76,7 @@ void LevelSceneNode::parseNamedPositionString(char* string) {
 	named_pos_values = parser->getValues();
 }
 
-bool LevelSceneNode::loadFromFile(char* filename, bool setActive) {
+bool LevelSceneNode::loadFromFile(const char* filename, bool setActive) {
 	ifstream fin(filename, ios::binary);
 	if(!fin) return false;
 	BinaryLevel level;
@@ -97,7 +97,7 @@ bool LevelSceneNode::loadFromFile(char* filename, bool setActive) {
 	return true;
 }
 
-bool LevelSceneNode::writeToFile(char* filename) {
+bool LevelSceneNode::writeToFile(const char* filename) {
 	ofstream fout(filename, ios::binary);
 	if(!fout) return false;
 	BinaryLevel level;
