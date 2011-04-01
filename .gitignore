@@ -3,6 +3,7 @@
 Makefile
 *.mode2v3
 *.pbxuser
+xcuserdata
 build
 *.log
 *.patch
