@@ -3,7 +3,7 @@
 #endif
 
 #include "debug.h"
-
+#include <iostream>
 
 namespace audiere {
 
@@ -20,11 +20,13 @@ namespace audiere {
       OutputDebugString(s.c_str());
     #endif
 
-    EnsureOpen();
+	  std::cout << "Audiere: " << s << std::flush;
+	  
+/*    EnsureOpen();
     if (handle) {
       fputs(s.c_str(), handle);
       fflush(handle);
-    }
+    }*/
   }
 
 
