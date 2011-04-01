@@ -97,7 +97,7 @@ class LevelEditor : public SceneNode {
 	bool checkNamedPosCollision(vector2 displacement, bool doLevelTest=true, bool doObjectsTest=true);
 	bool checkTileCollision(vector2 displacement);
 	void startAddNamedPos(char* name);
-	void addNamedPosVar(char* var, char* value);
+	void addNamedPosVar(const char* var, const char* value);
 
 	
 	public:

@@ -107,7 +107,6 @@ void LevelEditor::showInfoBox(const char* text, float timeOut, float textSize, v
 	gfx->getUI()->addWidget(infobox);
 	infobox->fadeIn();
 	delete [] buffer;
-	if(!delimiterSet) delete delimiter;
 }
 
 void LevelEditor::hideInfoBox() {
@@ -695,7 +694,7 @@ void LevelEditor::startAddNamedPos(char* name) {
 	nameVarLen = 0;
 }
 
-void LevelEditor::addNamedPosVar(char* var, char* value) {
+void LevelEditor::addNamedPosVar(const char* var, const char* value) {
 	if(state = STATE_ADDING_NAMED_POS) {
 		if(!namedPosString) return;
 		if(!var || !value) return;
