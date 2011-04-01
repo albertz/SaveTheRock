@@ -551,11 +551,12 @@ void GfxMgr::updateMousePos(float frameDelta) {
 	float x, y;
 	x = newX;
 	y = wparams[1] - newY;
-	if(x < 0.f) x = 0.f;
-	if(y < 0.f) y = 0.f;
-	if(x > wparams[0]) x = wparams[0];
-	if(y > wparams[1]) y = wparams[1];
-	glfwSetMousePos((int)x, int(wparams[1]-y));
+	bool inside = true;
+	if(x < 0.f) x = 0.f, inside = false;
+	if(y < 0.f) y = 0.f, inside = false;
+	if(x > wparams[0]) x = wparams[0], inside = false;
+	if(y > wparams[1]) y = wparams[1], inside = false;
+	//glfwSetMousePos((int)x, int(wparams[1]-y));
 	absoluteMousePos.set(x, y);
 	currentMousePos = absoluteMousePos + camera->getAbsoluteTranslation();
 }

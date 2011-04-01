@@ -39,8 +39,7 @@ renderer::renderer(int width, int height, bool fs, bool vsync, int fsaa) {
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, fsaa);
 	
 	int mode = GLFW_WINDOW;
-	if(fullscreen)
-		mode = GLFW_FULLSCREEN;
+	if(fullscreen) mode = GLFW_FULLSCREEN;
 	assert(glfwOpenWindow(w_width, w_height, 0, 0, 0, 0, 0, 0, mode) == GL_TRUE);	
 	glfwGetWindowSize(&w_width, &w_height);
 	glMatrixMode(GL_PROJECTION);
@@ -48,17 +47,18 @@ renderer::renderer(int width, int height, bool fs, bool vsync, int fsaa) {
   	gluOrtho2D(-0.5f, w_width-0.5f, -0.5f, w_height-0.5f);
   	glMatrixMode(GL_MODELVIEW);
   	glEnable(GL_BLEND);
-    	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    	glEnable(GL_LINE_SMOOTH);
-    	glDisable(GL_DEPTH_TEST);
-    	glHint(GL_LINE_SMOOTH_HINT, 2);
-    	glfwDisable(GLFW_MOUSE_CURSOR);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_LINE_SMOOTH);
+	glDisable(GL_DEPTH_TEST);
+	glHint(GL_LINE_SMOOTH_HINT, 2);
+	if(fullscreen) glfwDisable(GLFW_MOUSE_CURSOR);
 
-    	if(glfwExtensionSupported("GL_EXT_texture_rectangle") || glfwExtensionSupported("GL_ARB_texture_rectangle")) {
+	if(glfwExtensionSupported("GL_EXT_texture_rectangle") || glfwExtensionSupported("GL_ARB_texture_rectangle")) {
 		texRectAvailable = true;
-	} else texRectAvailable = false;
+	} else
+		texRectAvailable = false;
 	
-    	if(glfwExtensionSupported("GL_ARB_vertex_buffer_object")) {
+	if(glfwExtensionSupported("GL_ARB_vertex_buffer_object")) {
 		vboAvailable = true;
 		C_glGenBuffers = (P_glGenBuffers)glfwGetProcAddress("glGenBuffers");
 		C_glBindBuffer = (P_glBindBuffer)glfwGetProcAddress("glBindBuffer");
@@ -67,12 +67,13 @@ renderer::renderer(int width, int height, bool fs, bool vsync, int fsaa) {
 		if(!(C_glGenBuffers && C_glBindBuffer && C_glBufferData && C_glDeleteBuffers)) {
 			vboAvailable = false;
 		}
-	} else vboAvailable = false;
-
+	} else
+		vboAvailable = false;
+	
 	if(vsync)
-    		glfwSwapInterval(1);
+		glfwSwapInterval(1);
     	
-    	if(vboAvailable) {
+	if(vboAvailable) {
 		generateVBO(&bg_v_vbo);
 		generateVBO(&bg_t_vbo);
    	 	generateVBO(&level_tri_vbo);
@@ -81,7 +82,7 @@ renderer::renderer(int width, int height, bool fs, bool vsync, int fsaa) {
 		generateVBO(&txt_c_vbo);
 	}
    	
-    	loadFontTexture();
+	loadFontTexture();
 }
 
 void renderer::setWindowTitle(char* title) {
