@@ -48,7 +48,7 @@ class UILabel : public UIWidget {
 	UILabel(GfxMgr* gfx_n);
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
-	void setText(char* text_n, bool font_n, float size_n, bool level_label_n=false);
+	void setText(const char* text_n, bool font_n, float size_n, bool level_label_n=false);
 	aabb2 getBoundingBox();
 };
 
@@ -62,7 +62,7 @@ class UIImage : public UIWidget {
 	public:
 	UIImage(GfxMgr* gfx_n);
 	void update(float frameDelta);
-	void setImage(char* texture_name);
+	void setImage(const char* texture_name);
 	void setPosition(vector2 position_n);
 	vector2 getSize();
 };
@@ -91,7 +91,7 @@ class UIInfoBox : public UIWidget {
 		void setPosition(vector2 position_n);
 		void setText(float margin_n, float text_size_n, bool font_n);
 		void setTimeout(float seconds);
-		void addText(char* text, bool isGray=false);
+		void addText(const char* text, bool isGray=false);
 		void addBreak();
 		void receiveKeyEvent(std::list<KeyEvent> events);
 		void fadeIn();
@@ -131,8 +131,8 @@ class UIInputBox : public UIWidget {
 	void setActive(bool state);
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
-	void setInputBox(char* label_text, bool alphanumeric_n=true);
-	void setText(char* text_n);
+	void setInputBox(const char* label_text, bool alphanumeric_n=true);
+	void setText(const char* text_n);
 	int pollStatus();
 	char* getReturnString();
 	void resetStatus();
@@ -169,7 +169,7 @@ class UIMenu : public UIWidget {
 	void update(float frameDelta);
 	void setPosition(vector2 position_n);
 	void setMenu(float margin_n, float text_size_n, bool font_n, bool mouseControl_n=true);
-	void addMenuOption(char* text, bool isSelected=false);
+	void addMenuOption(const char* text, bool isSelected=false);
 	void addMenuBreak();
 	int pollStatus();
 	void resetStatus();

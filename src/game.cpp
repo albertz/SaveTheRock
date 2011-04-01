@@ -126,7 +126,7 @@ void Game::saveDatabase() {
 	fout.write((char*)(db), sizeof(DatabaseFile));
 }
 
-void Game::showInfoBox(char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, char* delimiter) {
+void Game::showInfoBox(const char* text, float timeOut, float textSize, vector2 position, float margin, float transparency, const char* delimiter) {
 	if(infobox) gfx->deleteSceneNode(infobox);
 
 	bool delimiterSet = true;

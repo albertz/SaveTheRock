@@ -151,7 +151,7 @@ class SceneNode {
 	SceneNode();
 	virtual ~SceneNode();
 	
-	void setName(char* newName);
+	void setName(const char* newName);
 	char* getName();
 
 	void setActive(bool state);

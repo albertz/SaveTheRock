@@ -29,7 +29,7 @@ SceneNode::~SceneNode() {
 	delete children;
 }
 
-void SceneNode::setName(char* newName) {
+void SceneNode::setName(const char* newName) {
 	if(name) delete name;
 	name = new char[strlen(newName)+1];
 	for(int x=0; x<strlen(newName); x++) name[x] = newName[x];

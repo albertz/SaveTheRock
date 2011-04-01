@@ -24,7 +24,7 @@ SndMgr::SndMgr(GfxMgr* gfx_n) {
 	nextTrackTimer = MUSIC_TRACK_SWITCH_TIME;
 }
 
-void SndMgr::__addSound(char* name, char* filepath) {
+void SndMgr::__addSound(const char* name, const char* filepath) {
 	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
 	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
 	int namelen = strlen(name);
@@ -33,7 +33,7 @@ void SndMgr::__addSound(char* name, char* filepath) {
 	sounds_n++;
 }
 
-void SndMgr::__addMusic(char* name, char* filepath) {
+void SndMgr::__addMusic(const char* name, const char* filepath) {
 	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
 	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
 	int namelen = strlen(name);
@@ -74,7 +74,7 @@ void SndMgr::update(float frameDelta) {
 	}
 }
 
-void SndMgr::playSound(char* name, vector2 transmitter_pos) {
+void SndMgr::playSound(const char* name, vector2 transmitter_pos) {
 	if(__muteAll) return;
 	
 	vector2 camerapos = gfx->getCamera()->getAbsoluteTranslation();
@@ -116,7 +116,7 @@ void SndMgr::playRandMusic() {
 	delete [] name;	
 }
 
-void SndMgr::playMusic(char* name) {
+void SndMgr::playMusic(const char* name) {
 	if(__muteAll) return;
 	if(__muteMusic) return;
 

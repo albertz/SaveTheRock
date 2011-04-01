@@ -196,7 +196,7 @@ class Ragdoll : public SceneNode {
 	public:
 	Ragdoll(GfxMgr* gfx_n);
 	~Ragdoll();
-	void init(vector2 position, char* texture_name);
+	void init(vector2 position, const char* texture_name);
 	void update(float frameDelta);
 	bool receiveCollisionEvent(CollisionEvent event);
 	Primitive* getCollisionPrimitive();

@@ -105,7 +105,7 @@ void UILabel::setPosition(vector2 position_n) {
 	position = position_n;
 }
 
-void UILabel::setText(char* text_n, bool font_n, float size_n, bool level_label_n) {
+void UILabel::setText(const char* text_n, bool font_n, float size_n, bool level_label_n) {
 	text_len = strlen(text_n);
 	if(text) delete text;
 	text = new char[text_len];
@@ -173,7 +173,7 @@ void UIImage::setPosition(vector2 position_n) {
 	image->vertices[3] = position + vector2(0.f, size[1]);
 }
 
-void UIImage::setImage(char* texture_name) {
+void UIImage::setImage(const char* texture_name) {
 	sprite = new AnimatedSpriteSceneNode(gfx);
 	int texid = gfx->getTexMgr()->getId(texture_name);
 	size = gfx->getTexMgr()->getSize(texid);
@@ -292,7 +292,7 @@ void UIInfoBox::setTimeout(float seconds) {
 	timeOut = seconds;
 }
 
-void UIInfoBox::addText(char* text, bool isGray) {
+void UIInfoBox::addText(const char* text, bool isGray) {
 	UILabel* label = new UILabel(gfx);
 	if(isGray)
 		label->setColor(MENU_TEXT_COLOR_SELECTED);
@@ -472,7 +472,7 @@ void UIInputBox::setPosition(vector2 position_n) {
 	position = position_n;
 }
 
-void UIInputBox::setInputBox(char* label_text, bool alphanumeric_n) {
+void UIInputBox::setInputBox(const char* label_text, bool alphanumeric_n) {
 	size = vector2(800.f, 200.f);
 	margin = 5.f;
 	text_size = 23.f;
@@ -498,7 +498,7 @@ void UIInputBox::setInputBox(char* label_text, bool alphanumeric_n) {
 	input_len = 0;
 }
 
-void UIInputBox::setText(char* text_n) {
+void UIInputBox::setText(const char* text_n) {
 	input_len = strlen(text_n);
 	if(input_len) {
 		input = new char[input_len+1];
@@ -751,7 +751,7 @@ void UIMenu::setMenu(float margin_n, float text_size_n, bool font_n, bool mouseC
 	mouseControl = mouseControl_n;
 }
 
-void UIMenu::addMenuOption(char* text, bool isSelected) {
+void UIMenu::addMenuOption(const char* text, bool isSelected) {
 	UILabel* label = new UILabel(gfx);
 	if(isSelected)
 		label->setColor(MENU_TEXT_COLOR_SELECTED);

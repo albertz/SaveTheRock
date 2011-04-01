@@ -74,7 +74,7 @@ class Game {
 	
 	void saveDatabase();
 	
-	void showInfoBox(char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, char* delimiter=NULL);
+	void showInfoBox(const char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, const char* delimiter=NULL);
 	void hideInfoBox();
 	void openMainMenu();
 	void openLoadCustomMenu();
