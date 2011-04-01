@@ -76,7 +76,7 @@ class LevelEditor : public SceneNode {
 	 
 	void showInfoBox(const char* text, float timeOut=0.f, float textSize=24.f, vector2 position=vector2(100.f, 100.f), float margin=10.f, float transparency=1.f, const char* delimiter=NULL);
 	void hideInfoBox();
-	void openInputBox(char* title, char* text=NULL, bool alphanumeric=true);
+	void openInputBox(const char* title, const char* text=NULL, bool alphanumeric=true);
 	
 	void openEditMenu(vector2 position);
 	void openLoadMenu(vector2 position);
@@ -96,7 +96,7 @@ class LevelEditor : public SceneNode {
 	void drawCursor(float frameDelta);
 	bool checkNamedPosCollision(vector2 displacement, bool doLevelTest=true, bool doObjectsTest=true);
 	bool checkTileCollision(vector2 displacement);
-	void startAddNamedPos(char* name);
+	void startAddNamedPos(const char* name);
 	void addNamedPosVar(const char* var, const char* value);
 
 	

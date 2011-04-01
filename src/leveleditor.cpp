@@ -115,7 +115,7 @@ void LevelEditor::hideInfoBox() {
 	infobox->fadeOut();	
 }
 
-void LevelEditor::openInputBox(char* title, char* text, bool alphanumeric) {
+void LevelEditor::openInputBox(const char* title, const char* text, bool alphanumeric) {
 	if(inputBox) delete inputBox;
 	inputBox = new UIInputBox(gfx);
 	inputBox->setPosition(vector2(100.f, 100.f));
@@ -675,7 +675,7 @@ bool LevelEditor::checkTileCollision(vector2 displacement) {
 	return event.doIntersect;
 }
 
-void LevelEditor::startAddNamedPos(char* name) {
+void LevelEditor::startAddNamedPos(const char* name) {
 	if(namedPosName) delete [] namedPosName;
 	namedPosName = new char[MAX_TEXT_BUFFER];
 	int namelen = strlen(name);
