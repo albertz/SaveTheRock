@@ -603,7 +603,11 @@ void Game::enterFirstRunState() {
 	db->res_x = 1024;
 	db->res_y = 768;
 #endif
+#ifdef __APPLE__
+	db->fullscreen = false;
+#else
 	db->fullscreen = true;
+#endif
 	db->fsaa = 0;
 	db->story_progress = 0;
 	db->mute_all = false;
