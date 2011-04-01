@@ -28,6 +28,10 @@
   #include "device_al.h"
 #endif
 
+#ifdef HAVE_SDL
+  #include "device_sdl.h"
+#endif
+
 #ifdef HAVE_DSOUND
   #include "device_ds.h"
 #endif
@@ -149,6 +153,9 @@ namespace audiere {
       "directsound:DirectSound (high-performance)"  ";"
       "winmm:Windows Multimedia (compatible)"  ";"
 #else
+#ifdef HAVE_SDL
+      "sdl:Simple Direct Media sound device" ";"
+#endif
 #ifdef HAVE_OSS
       "oss:Open Sound System"  ";"
 #endif
@@ -187,7 +194,7 @@ namespace audiere {
     const std::string& name,
     const ParameterList& parameters)
   {
-    ADR_GUARD("DoOpenDevice " + name);
+    ADR_GUARD("DoOpenDevice");
 
     #ifdef _MSC_VER
 
@@ -219,6 +226,7 @@ namespace audiere {
         TRY_GROUP("al");
         TRY_GROUP("directsound");
         TRY_GROUP("winmm");
+        TRY_GROUP("sdl");
         TRY_GROUP("oss");
         return 0;
       }
@@ -226,6 +234,13 @@ namespace audiere {
       #ifdef HAVE_OSS
         if (name == "oss") {
           TRY_DEVICE(OSSAudioDevice);
+          return 0;
+        }
+      #endif
+
+      #ifdef HAVE_SDL
+        if (name == "sdl") {
+          TRY_DEVICE(SDLAudioDevice);
           return 0;
         }
       #endif
