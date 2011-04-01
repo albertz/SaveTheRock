@@ -25,7 +25,7 @@ class Filesystem {
 	
 	public:
 	Filesystem();
-	char* getLevelFilename(char* name, bool special=false);
+	char* getLevelFilename(const char* name, bool special=false);
 	std::list<char*>* getCustomLevels();
 	std::list<char*>* getMusicFiles();
 	

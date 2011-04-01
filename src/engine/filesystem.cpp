@@ -30,7 +30,7 @@ Filesystem::Filesystem() {
 	strcat(music_dir, FILESYSTEM_MUSIC_DIR);
 }
 
-char* Filesystem::getLevelFilename(char* name, bool special) {
+char* Filesystem::getLevelFilename(const char* name, bool special) {
 	int size;
 	if(!special)
 		size = strlen(levels_dir) + strlen(name) + strlen(".lvl");
