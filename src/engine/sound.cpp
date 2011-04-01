@@ -26,6 +26,8 @@ SndMgr::SndMgr(GfxMgr* gfx_n) {
 
 void SndMgr::__addSound(const char* name, const char* filepath) {
 	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
+	if(sounds[sounds_n].get() == NULL)
+		std::cout << "failed to load sound: " << filepath << std::endl;
 	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
 	int namelen = strlen(name);
 	for(int x=0; x<namelen; x++) sound_names[sounds_n][x] = name[x];
@@ -35,6 +37,8 @@ void SndMgr::__addSound(const char* name, const char* filepath) {
 
 void SndMgr::__addMusic(const char* name, const char* filepath) {
 	sounds[sounds_n] = OpenSoundEffect(device, filepath, SINGLE);
+	if(sounds[sounds_n].get() == NULL)
+		std::cout << "failed to load music: " << filepath << std::endl;
 	sound_names[sounds_n] = new char[MAX_SOUND_NAME];
 	int namelen = strlen(name);
 	for(int x=0; x<namelen; x++) sound_names[sounds_n][x] = name[x];
@@ -44,6 +48,8 @@ void SndMgr::__addMusic(const char* name, const char* filepath) {
 
 void SndMgr::init() {
 	device = OpenDevice();
+	if(device.get() == NULL)
+		std::cout << "failed to open sound device" << std::endl;
 	
 	__addSound("LASER", "../media/sounds/laser.wav");
 	__addSound("EXPLOSION", "../media/sounds/explosion.wav");
